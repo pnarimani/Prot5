@@ -1,5 +1,21 @@
 {
   "dependencies": {
+    "com.pnarimani.fast-spring": {
+      "version": "git@github.com:pnarimani/FastSpring.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "6bcc9d14128f31c7dbacb2fa81001b7335ded80f"
+    },
+    "com.singularitygroup.hotreload": {
+      "version": "file:com.singularitygroup.hotreload",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0",
+        "com.unity.modules.unitywebrequest": "1.0.0"
+      }
+    },
     "com.unity.2d.animation": {
       "version": "13.0.4",
       "depth": 0,
