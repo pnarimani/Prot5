@@ -1,0 +1,3 @@
+[submodule "Packages/com.unity.mcp"]
+	path = Packages/com.unity.mcp
+	url = git@github.com:pnarimani/unity-mcp.git
