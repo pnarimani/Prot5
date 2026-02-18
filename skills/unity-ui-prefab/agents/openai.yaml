@@ -1,0 +1,4 @@
+interface:
+  display_name: "Unity uGUI Prefab Creator"
+  short_description: "Build responsive Unity uGUI prefabs safely"
+  default_prompt: "Create or update Unity uGUI prefabs using Unity MCP tools first. Apply Layout Element, layout groups, and Content Size Fitter for responsive behavior. Edit raw YAML only as a last resort."
