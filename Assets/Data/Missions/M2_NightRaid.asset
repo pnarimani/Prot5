@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 464d61e66d001a442aa178d8a0e0392c, type: 3}
+  m_Name: M2_NightRaid
+  m_EditorClassIdentifier: SiegeSurvival::SiegeSurvival.Data.MissionDefinition
+  missionId: 1
+  displayName: Night Raid on Siege Camp
+  description: Attack the siege camp to weaken the enemy. Costs 40 Fuel. +20% capture
+    chance if fuel < 40.
+  outcomesDescription: "Great: -10 Siege Intensity (40%) | Moderate: -5 Siege Intensity
+    (40%) | Captured: +1 Siege Intensity, 5 deaths, +15 Unrest (20%\u219240%)"

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25afb937efc888e45973873025273f01, type: 3}
+  m_Name: L04_MandatoryGuardService
+  m_EditorClassIdentifier: SiegeSurvival::SiegeSurvival.Data.LawDefinition
+  lawId: 3
+  displayName: Mandatory Guard Service
+  description: Draft workers into guard duty.
+  requirementsDescription: Unrest > 40
+  onEnactEffectsDescription: "On Enact: 10 Workers \u2192 Guards, Morale -10"
+  ongoingEffectsDescription: 'Ongoing: Food consumption +15/day'

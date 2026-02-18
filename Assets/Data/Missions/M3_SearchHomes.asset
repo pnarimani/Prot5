@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 464d61e66d001a442aa178d8a0e0392c, type: 3}
+  m_Name: M3_SearchHomes
+  m_EditorClassIdentifier: SiegeSurvival::SiegeSurvival.Data.MissionDefinition
+  missionId: 2
+  displayName: Search Abandoned Homes
+  description: Loot evacuated buildings for supplies.
+  outcomesDescription: 'Great: +60 Materials, +40 Medicine (50%) | Moderate: +40
+    Materials (30%) | Trapped: 3 deaths, -20 Materials (20%)'

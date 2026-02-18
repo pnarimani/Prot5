@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21b3afe4118af0743beeffd1fd7edd13, type: 3}
+  m_Name: O2_SoupKitchens
+  m_EditorClassIdentifier: SiegeSurvival::SiegeSurvival.Data.EmergencyOrderDefinition
+  orderId: 1
+  displayName: Soup Kitchens
+  description: Open public kitchens to calm the populace.
+  costDescription: Food -40
+  effectDescription: Unrest -15 today

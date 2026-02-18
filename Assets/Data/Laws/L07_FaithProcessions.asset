@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25afb937efc888e45973873025273f01, type: 3}
+  m_Name: L07_FaithProcessions
+  m_EditorClassIdentifier: SiegeSurvival::SiegeSurvival.Data.LawDefinition
+  lawId: 6
+  displayName: Faith Processions
+  description: Organize religious processions to boost morale.
+  requirementsDescription: Morale < 40
+  onEnactEffectsDescription: 'On Enact: Materials -10, Morale +15, Unrest +5'
+  ongoingEffectsDescription: 'Ongoing: (none)'

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fa9521d4e5aae944af9378022aac4fd, type: 3}
+  m_Name: ArtisanQuarter
+  m_EditorClassIdentifier: SiegeSurvival::SiegeSurvival.Data.ZoneDefinition
+  zoneName: Artisan Quarter
+  order: 2
+  baseIntegrity: 75
+  integrityRangeMin: 75
+  integrityRangeMax: 75
+  capacity: 25
+  perimeterFactor: 0.8
+  foodProductionModifier: 1
+  foodProductionLostModifier: 1
+  materialsProductionModifier: 1.4
+  materialsProductionLostModifier: 0.5
+  fuelScavengingLostModifier: 1
+  unrestGrowthModifier: 1
+  moraleBonus: 0
+  onLossUnrest: 10
+  onLossSickness: 0
+  onLossMorale: -5
+  onEvacMorale: -15
+  onLossProductionDesc: Materials production -50%
+  isKeep: 0
+  hasRandomIntegrity: 0

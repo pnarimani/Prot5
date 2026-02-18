@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c689b612806dd214b9d6b685856f9a27, type: 3}
+  m_Name: E1_HungerRiot
+  m_EditorClassIdentifier: SiegeSurvival::SiegeSurvival.Data.EventDefinition
+  eventId: 0
+  displayName: Hunger Riot
+  triggerDescription: 2 consecutive food deficit days + Unrest > 50
+  effectDescription: 'Choice: A) Distribute emergency rations (Food -40, Unrest -10),
+    B) Suppress (5 deaths, Unrest -20, Morale -15)'
