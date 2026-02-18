@@ -13,7 +13,7 @@ namespace SiegeSurvival.Core
     /// </summary>
     public class GameManager : MonoBehaviour
     {
-        public static GameManager Instance { get; private set; }
+        public static GameManager Instance => FindFirstObjectByType<GameManager>();
 
         [Header("Zone Definitions (order 0-4)")]
         public ZoneDefinition[] zoneDefinitions; // must be 5, assigned in inspector
@@ -30,12 +30,6 @@ namespace SiegeSurvival.Core
         public event Action OnPhaseChanged;
         public event Action OnStateChanged;
         public event Action<SimulationContext> OnDaySimulated;
-
-        private void Awake()
-        {
-            if (Instance != null && Instance != this) { Destroy(gameObject); return; }
-            Instance = this;
-        }
 
         private void Start()
         {

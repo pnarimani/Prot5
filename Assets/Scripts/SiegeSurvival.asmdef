@@ -3,7 +3,8 @@
     "rootNamespace": "SiegeSurvival",
     "references": [
         "Unity.TextMeshPro",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "FastSpring"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -88,13 +88,13 @@ namespace SiegeSurvival.UI.Panels
             }
 
             // Job rows
-            RefreshJobRow(foodRow, JobSlot.FoodProduction, s, "Food Production", GetFoodProjection(s));
-            RefreshJobRow(waterRow, JobSlot.WaterDrawing, s, "Water Drawing", GetWaterProjection(s));
-            RefreshJobRow(materialsRow, JobSlot.MaterialsCrafting, s, "Materials Crafting", GetMaterialsProjection(s));
-            RefreshJobRow(repairsRow, JobSlot.Repairs, s, "Repairs", GetRepairsProjection(s));
-            RefreshJobRow(sanitationRow, JobSlot.Sanitation, s, "Sanitation", GetSanitationProjection(s));
-            RefreshJobRow(clinicRow, JobSlot.ClinicStaff, s, "Clinic Staff", GetClinicProjection(s));
-            RefreshJobRow(fuelRow, JobSlot.FuelScavenging, s, "Fuel Scavenging", GetFuelProjection(s));
+            RefreshJobRow(foodRow, JobSlot.FoodProduction, s, "Food Production", ResourceProjectionCalculator.GetFoodProjectionFormatted(s));
+            RefreshJobRow(waterRow, JobSlot.WaterDrawing, s, "Water Drawing", ResourceProjectionCalculator.GetWaterProjectionFormatted(s));
+            RefreshJobRow(materialsRow, JobSlot.MaterialsCrafting, s, "Materials Crafting", ResourceProjectionCalculator.GetMaterialsProjectionFormatted(s));
+            RefreshJobRow(repairsRow, JobSlot.Repairs, s, "Repairs", ResourceProjectionCalculator.GetRepairsProjectionFormatted(s));
+            RefreshJobRow(sanitationRow, JobSlot.Sanitation, s, "Sanitation", ResourceProjectionCalculator.GetSanitationProjectionFormatted(s));
+            RefreshJobRow(clinicRow, JobSlot.ClinicStaff, s, "Clinic Staff", ResourceProjectionCalculator.GetClinicProjectionFormatted(s));
+            RefreshJobRow(fuelRow, JobSlot.FuelScavenging, s, "Fuel Scavenging", ResourceProjectionCalculator.GetFuelProjectionFormatted(s));
 
             // Guard info
             if (guardInfoText)
@@ -127,86 +127,6 @@ namespace SiegeSurvival.UI.Panels
             }
         }
 
-        // === Projection Calculations ===
-
-        private string GetFoodProjection(GameState s)
-        {
-            int units = s.workerAllocation[JobSlot.FoodProduction] / 5;
-            float zoneMult = s.OuterFarms.isLost ? s.OuterFarms.definition.foodProductionLostModifier : s.OuterFarms.definition.foodProductionModifier;
-            float moraleMult = s.morale < 40 ? 0.8f : 1f;
-            float unrestMult = s.unrest > 60 ? 0.7f : 1f;
-            float fuelMult = s.fuel <= 0 ? 0.85f : 1f;
-            float lawMult = GetLawProductionMult(s);
-            int prod = Mathf.FloorToInt(units * 10 * zoneMult * moraleMult * unrestMult * fuelMult * lawMult);
-            return $"+{prod} Food/day";
-        }
-
-        private string GetWaterProjection(GameState s)
-        {
-            int units = s.workerAllocation[JobSlot.WaterDrawing] / 5;
-            float wellsMult = s.wellsDamaged ? 0.5f : 1f;
-            float lawMult = GetLawProductionMult(s);
-            int prod = Mathf.FloorToInt(units * 12 * wellsMult * lawMult);
-            return $"+{prod} Water/day";
-        }
-
-        private string GetMaterialsProjection(GameState s)
-        {
-            int units = s.workerAllocation[JobSlot.MaterialsCrafting] / 5;
-            float zoneMult = s.ArtisanQuarter.isLost ? s.ArtisanQuarter.definition.materialsProductionLostModifier : s.ArtisanQuarter.definition.materialsProductionModifier;
-            float lawMult = GetLawProductionMult(s);
-            int prod = Mathf.FloorToInt(units * 8 * zoneMult * lawMult);
-            return $"+{prod} Materials/day";
-        }
-
-        private string GetRepairsProjection(GameState s)
-        {
-            int units = s.workerAllocation[JobSlot.Repairs] / 5;
-            float lawMult = GetLawAllProdMult(s);
-            int repair = Mathf.FloorToInt(units * 8 * lawMult);
-            int cost = units * 4;
-            return $"+{repair} Integrity, Cost: {cost} Mat/day";
-        }
-
-        private string GetSanitationProjection(GameState s)
-        {
-            int units = s.workerAllocation[JobSlot.Sanitation] / 5;
-            return $"-{units * 5} Sickness/day";
-        }
-
-        private string GetClinicProjection(GameState s)
-        {
-            int units = s.workerAllocation[JobSlot.ClinicStaff] / 5;
-            float medCostMult = s.enactedLaws.Contains(LawId.L9_MedicalTriage) ? 0.5f : 1f;
-            int medPerUnit = Mathf.CeilToInt(5 * medCostMult);
-            return $"-{units * 8} Sickness/day, Cost: {units * medPerUnit} Med/day";
-        }
-
-        private string GetFuelProjection(GameState s)
-        {
-            int units = s.workerAllocation[JobSlot.FuelScavenging] / 5;
-            float zoneMult = s.OuterFarms.isLost ? s.OuterFarms.definition.fuelScavengingLostModifier : 1f;
-            float lawMult = GetLawProductionMult(s);
-            int prod = Mathf.FloorToInt(units * 15 * zoneMult * lawMult);
-            string risk = s.siegeIntensity >= 4 ? " [20% death risk]" : "";
-            return $"+{prod} Fuel/day{risk}";
-        }
-
-        private float GetLawProductionMult(GameState s)
-        {
-            float mult = 1f;
-            if (s.enactedLaws.Contains(LawId.L3_ExtendedShifts)) mult *= 1.25f;
-            mult *= GetLawAllProdMult(s);
-            return mult;
-        }
-
-        private float GetLawAllProdMult(GameState s)
-        {
-            float mult = 1f;
-            if (s.enactedLaws.Contains(LawId.L10_Curfew)) mult *= 0.8f;
-            if (s.todayEmergencyOrder == EmergencyOrderId.O5_QuarantineDistrict) mult *= 0.5f;
-            return mult;
-        }
     }
 
     [System.Serializable]
