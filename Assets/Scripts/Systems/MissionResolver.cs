@@ -1,3 +1,4 @@
+using System.Linq;
 using SiegeSurvival.Core;
 using SiegeSurvival.Data;
 using SiegeSurvival.Data.Runtime;
@@ -13,6 +14,14 @@ namespace SiegeSurvival.Systems
         public static void ResolveMission(GameState state, SimulationContext ctx, CausalityLog log, RandomProvider rng)
         {
             if (state.activeMission == null) return;
+
+            // Check if mission duration has elapsed
+            var def = Resources.LoadAll<MissionDefinition>("Data/Missions")
+                .FirstOrDefault(x => x.missionId == state.activeMission.missionId);
+            int duration = def != null ? def.Duration : 5;
+
+            if (state.currentDay < state.activeMission.startDay + duration - 1)
+                return; // Mission still in progress
 
             // Calculate fuel risk modifier
             float fuelRiskMod = 0f;

@@ -30,6 +30,7 @@ namespace SiegeSurvival.Core
         public event Action OnPhaseChanged;
         public event Action OnStateChanged;
         public event Action<SimulationContext> OnDaySimulated;
+        public event Action OnScheduledActionChanged;
 
         private void Start()
         {
@@ -133,6 +134,9 @@ namespace SiegeSurvival.Core
             Phase = GamePhase.Simulating;
             OnPhaseChanged?.Invoke();
 
+            // Execute scheduled player action
+            ExecuteScheduledAction();
+
             // Deduct pre-simulation costs
             DaySimulator.DeductPreSimulationCosts(State, Log);
 
@@ -191,14 +195,49 @@ namespace SiegeSurvival.Core
             OnStateChanged?.Invoke();
         }
 
-        // --- Law Enactment ---
+        // ==================== Scheduled Action System ====================
+
+        public bool HasScheduledAction =>
+            State.scheduledLaw.HasValue ||
+            State.scheduledOrder.HasValue ||
+            State.scheduledMission.HasValue;
+
+        /// <summary>Clears any currently scheduled action and notifies listeners.</summary>
+        public void ClearScheduledAction()
+        {
+            ClearScheduledActionInternal();
+            OnScheduledActionChanged?.Invoke();
+            OnStateChanged?.Invoke();
+        }
+
+        private void ClearScheduledActionInternal()
+        {
+            State.scheduledLaw = null;
+            State.scheduledOrder = null;
+            State.scheduledMission = null;
+            State.scheduledQuarantineZone = -1;
+        }
+
+        private void ExecuteScheduledAction()
+        {
+            if (State.scheduledLaw.HasValue)
+                ExecuteLaw(State.scheduledLaw.Value);
+            else if (State.scheduledOrder.HasValue)
+                ExecuteOrder(State.scheduledOrder.Value, State.scheduledQuarantineZone);
+            else if (State.scheduledMission.HasValue)
+                ExecuteMission(State.scheduledMission.Value);
+
+            ClearScheduledActionInternal();
+        }
+
+        // --- Law Scheduling & Execution ---
 
         public bool IsLawUnlocked(LawId lawId)
         {
             switch (lawId)
             {
                 case LawId.L01_StrictRations: return true;
-                case LawId.L02_DilutedWater: return State.water < 100; // or water deficit occurred
+                case LawId.L02_DilutedWater: return State.water < 100;
                 case LawId.L03_ExtendedShifts: return State.currentDay >= 5;
                 case LawId.L04_MandatoryGuardService: return State.unrest > 40;
                 case LawId.L05_EmergencyShelters: return State.AnyZoneLost;
@@ -221,7 +260,6 @@ namespace SiegeSurvival.Core
             if (State.daysSinceLastLaw < 3) return false;
             if (!IsLawUnlocked(lawId)) return false;
 
-            // Check specific costs
             switch (lawId)
             {
                 case LawId.L04_MandatoryGuardService:
@@ -234,15 +272,22 @@ namespace SiegeSurvival.Core
             return true;
         }
 
+        /// <summary>Schedules a law to be enacted at end of day. Replaces any previous scheduled action.</summary>
         public void EnactLaw(LawId lawId)
         {
             if (!CanEnactLaw(lawId)) return;
+            ClearScheduledActionInternal();
+            State.scheduledLaw = lawId;
+            OnScheduledActionChanged?.Invoke();
+            OnStateChanged?.Invoke();
+        }
 
+        private void ExecuteLaw(LawId lawId)
+        {
             State.enactedLaws.Add(lawId);
             State.daysSinceLastLaw = 0;
             State.daysSinceLastLawEnacted = 0;
 
-            // Apply immediate on-enact effects
             switch (lawId)
             {
                 case LawId.L01_StrictRations:
@@ -266,7 +311,6 @@ namespace SiegeSurvival.Core
                 case LawId.L06_PublicExecutions:
                     State.unrest -= 25;
                     State.morale -= 20;
-                    // L6 priority: Healthy first
                     PopulationManager.ApplyDeathsHealthyFirst(State, 5, Log, "Public Executions (L6) enactment");
                     PopulationManager.RecomputeZonePopulationsAfterDeaths(State);
                     break;
@@ -281,27 +325,20 @@ namespace SiegeSurvival.Core
                     State.morale -= 20;
                     break;
                 case LawId.L09_MedicalTriage:
-                    // No immediate effect
                     break;
                 case LawId.L10_Curfew:
-                    // No immediate effect
                     break;
                 case LawId.L11_AbandonOuterRing:
-                    // Force Outer Farms lost
                     var farms = State.OuterFarms;
                     farms.isLost = true;
                     farms.currentIntegrity = 0;
-                    // Apply natural on-loss shock
-                    State.unrest += farms.definition.onLossUnrest; // +15
-                    State.sickness += farms.definition.onLossSickness; // +10
-                    State.morale += farms.definition.onLossMorale; // -10
-                    // L11 extra
+                    State.unrest += farms.definition.onLossUnrest;
+                    State.sickness += farms.definition.onLossSickness;
+                    State.morale += farms.definition.onLossMorale;
                     State.unrest += 15;
-                    // Force population inward
                     PopulationManager.ForcePopulationInward(State, farms, Log);
                     break;
                 case LawId.L12_MartialLaw:
-                    // No immediate effect (ongoing caps applied during sim)
                     break;
             }
 
@@ -310,10 +347,9 @@ namespace SiegeSurvival.Core
             State.sickness = Mathf.Clamp(State.sickness, 0, 100);
 
             Telemetry.RecordLawEnacted(lawId, State.currentDay);
-            OnStateChanged?.Invoke();
         }
 
-        // --- Emergency Orders ---
+        // --- Emergency Order Scheduling & Execution ---
 
         public bool CanIssueOrder(EmergencyOrderId orderId)
         {
@@ -338,25 +374,30 @@ namespace SiegeSurvival.Core
             }
         }
 
+        /// <summary>Schedules an emergency order for end of day. Replaces any previous scheduled action.</summary>
         public void IssueOrder(EmergencyOrderId orderId, int quarantineZone = -1)
         {
             if (!CanIssueOrder(orderId)) return;
-            State.todayEmergencyOrder = orderId;
-            if (orderId == EmergencyOrderId.O5_QuarantineDistrict)
-            {
-                State.quarantineZoneIndex = quarantineZone;
-            }
+            ClearScheduledActionInternal();
+            State.scheduledOrder = orderId;
+            State.scheduledQuarantineZone = quarantineZone;
+            OnScheduledActionChanged?.Invoke();
             OnStateChanged?.Invoke();
         }
 
         public void CancelOrder()
         {
-            State.todayEmergencyOrder = null;
-            State.quarantineZoneIndex = -1;
-            OnStateChanged?.Invoke();
+            ClearScheduledAction();
         }
 
-        // --- Missions ---
+        private void ExecuteOrder(EmergencyOrderId orderId, int quarantineZone)
+        {
+            State.todayEmergencyOrder = orderId;
+            if (orderId == EmergencyOrderId.O5_QuarantineDistrict)
+                State.quarantineZoneIndex = quarantineZone;
+        }
+
+        // --- Mission Scheduling & Execution ---
 
         public bool CanStartMission(MissionId missionId)
         {
@@ -366,16 +407,21 @@ namespace SiegeSurvival.Core
             return true;
         }
 
+        /// <summary>Schedules a mission to start at end of day. Replaces any previous scheduled action.</summary>
         public void StartMission(MissionId missionId)
         {
             if (!CanStartMission(missionId)) return;
+            ClearScheduledActionInternal();
+            State.scheduledMission = missionId;
+            OnScheduledActionChanged?.Invoke();
+            OnStateChanged?.Invoke();
+        }
 
+        private void ExecuteMission(MissionId missionId)
+        {
             bool fuelInsufficient = (missionId == MissionId.M2_NightRaid && State.fuel < 40);
             State.activeMission = new ActiveMission(missionId, State.currentDay, 10, fuelInsufficient);
-
-            // Validate worker allocations (10 workers now unavailable)
             PopulationManager.ValidateWorkerAllocations(State);
-            OnStateChanged?.Invoke();
         }
 
         // --- Evacuation ---

@@ -48,6 +48,12 @@ namespace SiegeSurvival.Core
         public ActiveMission activeMission;
         public NightRaidDebuff nightRaidDebuff;
 
+        // --- Scheduled Action (one per day, executed on EndDay) ---
+        public LawId? scheduledLaw;
+        public EmergencyOrderId? scheduledOrder;
+        public int scheduledQuarantineZone = -1;
+        public MissionId? scheduledMission;
+
         // --- Wells ---
         public bool wellsDamaged;
 

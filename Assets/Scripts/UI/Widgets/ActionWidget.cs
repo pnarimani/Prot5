@@ -48,19 +48,101 @@ namespace SiegeSurvival.UI.Widgets
         void Start()
         {
             _gm = GameManager.Instance;
-            _buttonText.text = _actionType switch
+            _gm.OnScheduledActionChanged += RefreshWidget;
+            _gm.OnStateChanged += RefreshWidget;
+
+            _buttonText.text = GetDefaultButtonText();
+            RefreshWidget();
+        }
+
+        void OnDestroy()
+        {
+            if (_gm != null)
+            {
+                _gm.OnScheduledActionChanged -= RefreshWidget;
+                _gm.OnStateChanged -= RefreshWidget;
+            }
+        }
+
+        void OnButtonClicked()
+        {
+            var popup = Instantiate(_popup, transform.root, false);
+            popup.OnEntrySelected += OnEntrySelected;
+            popup.ShowEntries(GetEntries());
+        }
+
+        void OnEntrySelected(ActionSelectionEntry obj)
+        {
+            // Set panel content before scheduling (scheduling fires events that call RefreshWidget)
+            _title.text = obj.Title;
+            _desc.text = obj.Description;
+            _cons.text = obj.Consequences;
+
+            // Schedule the action via GameManager
+            switch (_actionType)
+            {
+                case ActionType.Law:
+                    _gm.EnactLaw((LawId)Enum.Parse(typeof(LawId), obj.Id));
+                    break;
+                case ActionType.EmergencyOrder:
+                    _gm.IssueOrder((EmergencyOrderId)Enum.Parse(typeof(EmergencyOrderId), obj.Id));
+                    break;
+                case ActionType.Mission:
+                    _gm.StartMission((MissionId)Enum.Parse(typeof(MissionId), obj.Id));
+                    break;
+            }
+
+            Show();
+        }
+
+        void RefreshWidget()
+        {
+            // Mission in-progress takes priority over scheduling
+            if (_actionType == ActionType.Mission && _gm.State.activeMission != null)
+            {
+                var def = GetMissionDefinition(_gm.State.activeMission.missionId);
+                if (def != null)
+                {
+                    int remaining = _gm.State.activeMission.startDay + def.Duration - _gm.State.currentDay;
+                    _buttonText.text = $"{remaining} day{(remaining != 1 ? "s" : "")} left";
+                    _button.interactable = false;
+
+                    _title.text = def.displayName;
+                    _desc.text = "Mission in progress";
+                    _cons.text = def.outcomesDescription;
+                    Show();
+                }
+                return;
+            }
+
+            // Reset button to default state
+            _button.interactable = true;
+            _buttonText.text = GetDefaultButtonText();
+
+            // Show/hide panel based on whether this widget's action type is scheduled
+            bool isScheduled = _actionType switch
+            {
+                ActionType.Law => _gm.State.scheduledLaw.HasValue,
+                ActionType.EmergencyOrder => _gm.State.scheduledOrder.HasValue,
+                ActionType.Mission => _gm.State.scheduledMission.HasValue,
+                _ => false
+            };
+
+            if (isScheduled)
+                Show();
+            else
+                Hide();
+        }
+
+        string GetDefaultButtonText()
+        {
+            return _actionType switch
             {
                 ActionType.Law => "Law",
                 ActionType.Mission => "Mission",
                 ActionType.EmergencyOrder => "Emergency Order",
                 _ => throw new ArgumentOutOfRangeException(),
             };
-        }
-
-        void OnButtonClicked()
-        {
-            var popup = Instantiate(_popup, transform.root, false);
-            popup.ShowEntries(GetEntries());
         }
 
         ActionSelectionEntry[] GetEntries()
