@@ -10,7 +10,7 @@ namespace SiegeSurvival.UI.Panels
 {
     /// <summary>
     /// Persistent event log showing all actions/events since game start.
-    /// Separated by day headers. Lives below WhyAmIDyingPanel in a vertical layout group.
+    /// Separated by day headers and shown in a popup panel.
     /// </summary>
     public class EventLogPanel : MonoBehaviour
     {
@@ -37,6 +37,8 @@ namespace SiegeSurvival.UI.Panels
                 scrollRect = GetComponentInChildren<ScrollRect>(true);
             if (closeButton == null)
                 closeButton = this.FindChildRecursive<Button>("#CloseButton");
+            if (closeButton != null)
+                closeButton.onClick.AddListener(ClosePopup);
         }
 
         private void Start()
@@ -48,13 +50,10 @@ namespace SiegeSurvival.UI.Panels
                 _gm.OnDaySimulated += OnDaySimulated;
                 _gm.OnPhaseChanged += OnPhaseChanged;
             }
-            if (closeButton != null)
-            {
-                closeButton.onClick.AddListener(ClosePopup);
-                popupRoot?.SetActive(false);
-            }
             _lastRecordedDay = 0;
             ClearLog();
+            BackfillFromTelemetry();
+            RebuildDisplay();
         }
 
         private void OnDestroy()
@@ -92,8 +91,41 @@ namespace SiegeSurvival.UI.Panels
             // We rely on explicit LogAction calls from GameManager events
         }
 
+        private void BackfillFromTelemetry()
+        {
+            var snaps = _gm?.Telemetry?.Data?.dayByDaySnapshots;
+            if (snaps == null || snaps.Count == 0)
+                return;
+
+            foreach (var snap in snaps)
+            {
+                if (snap.day <= _lastRecordedDay)
+                    continue;
+
+                var sb = new StringBuilder();
+                sb.AppendLine($"=========== DAY {snap.day} ==============");
+                sb.AppendLine("<b>Simulation:</b>");
+
+                if (snap.events.Count == 0)
+                {
+                    sb.AppendLine("  (no logged events)");
+                }
+                else
+                {
+                    foreach (var evt in snap.events)
+                        sb.AppendLine($"  <color=yellow>EVENT: {evt}</color>");
+                }
+
+                _dayEntries.Add(sb.ToString());
+                _lastRecordedDay = snap.day;
+            }
+        }
+
         private void OnDaySimulated(SimulationContext ctx)
         {
+            if (_gm == null)
+                return;
+
             // After simulation, gather the day's events from the causality log
             var log = _gm.Log;
             var sb = new StringBuilder();
@@ -152,6 +184,9 @@ namespace SiegeSurvival.UI.Panels
 
         private void OnPhaseChanged()
         {
+            if (_gm == null)
+                return;
+
             // Rebuild display when returning to player turn (after report closed)
             if (_gm.Phase == Data.GamePhase.PlayerTurn || _gm.Phase == Data.GamePhase.GameOver || _gm.Phase == Data.GamePhase.Victory)
             {

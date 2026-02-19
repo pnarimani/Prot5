@@ -3391,6 +3391,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 574c22a762f6051408733b3272223a90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SiegeSurvival::SiegeSurvival.UI.Panels.MidBottomInfoPanel
+  eventLogPopupPrefab: {fileID: 7010719756647319841, guid: 4dcce78caa7344342ab9ee6c2c8b85b5, type: 3}
 --- !u!1 &1489529262
 GameObject:
   m_ObjectHideFlags: 0
