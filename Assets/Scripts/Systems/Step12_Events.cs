@@ -57,27 +57,7 @@ namespace SiegeSurvival.Systems
                         $"Wall Breach Attempt! {perim.definition.zoneName} Integrity -15 → {perim.currentIntegrity}");
 
                     // Check if this causes zone loss
-                    if (perim.currentIntegrity <= 0)
-                    {
-                        perim.currentIntegrity = 0;
-                        if (perim.definition.isKeep)
-                        {
-                            ctx.keepBreached = true;
-                            log.AddFlat(CausalityCategory.Event, "KEEP BREACHED (from Wall Breach)", 0,
-                                "Keep integrity reached 0 from Wall Breach — GAME OVER");
-                        }
-                        else
-                        {
-                            perim.isLost = true;
-                            state.unrest += perim.definition.onLossUnrest;
-                            state.sickness += perim.definition.onLossSickness;
-                            state.morale += perim.definition.onLossMorale;
-                            log.AddFlat(CausalityCategory.Event,
-                                $"Zone Lost from Wall Breach: {perim.definition.zoneName}", 0,
-                                $"{perim.definition.zoneName} LOST from Wall Breach! Unrest +{perim.definition.onLossUnrest}, Sickness +{perim.definition.onLossSickness}, Morale {perim.definition.onLossMorale}");
-                            PopulationManager.ForcePopulationInward(state, perim, log);
-                        }
-                    }
+                    ZoneLossHelper.TryApplyZoneLoss(state, perim, ctx, log, "Wall Breach (E4)");
                 }
             }
 

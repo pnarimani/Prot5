@@ -13,7 +13,7 @@ namespace SiegeSurvival.Core
     /// </summary>
     public class GameManager : MonoBehaviour
     {
-        public static GameManager Instance => FindFirstObjectByType<GameManager>();
+        public static GameManager Instance { get; private set; }
 
         [Header("Zone Definitions (order 0-4)")]
         public ZoneDefinition[] zoneDefinitions; // must be 5, assigned in inspector
@@ -31,6 +31,11 @@ namespace SiegeSurvival.Core
         public event Action OnStateChanged;
         public event Action<SimulationContext> OnDaySimulated;
         public event Action OnScheduledActionChanged;
+
+        private void Awake()
+        {
+            Instance = this;
+        }
 
         private void Start()
         {
@@ -330,21 +335,15 @@ namespace SiegeSurvival.Core
                     break;
                 case LawId.L11_AbandonOuterRing:
                     var farms = State.OuterFarms;
-                    farms.isLost = true;
                     farms.currentIntegrity = 0;
-                    State.unrest += farms.definition.onLossUnrest;
-                    State.sickness += farms.definition.onLossSickness;
-                    State.morale += farms.definition.onLossMorale;
-                    State.unrest += 15;
-                    PopulationManager.ForcePopulationInward(State, farms, Log);
+                    ZoneLossHelper.TryApplyZoneLoss(State, farms, null, Log, "Abandon Outer Ring (L11)");
+                    State.unrest += 15; // extra penalty for deliberate abandonment
                     break;
                 case LawId.L12_MartialLaw:
                     break;
             }
 
-            State.morale = Mathf.Clamp(State.morale, 0, 100);
-            State.unrest = Mathf.Clamp(State.unrest, 0, 100);
-            State.sickness = Mathf.Clamp(State.sickness, 0, 100);
+            State.ClampAllMeters();
 
             Telemetry.RecordLawEnacted(lawId, State.currentDay);
         }
@@ -465,9 +464,7 @@ namespace SiegeSurvival.Core
             // Move population inward
             PopulationManager.ForcePopulationInward(State, perim, Log);
 
-            State.morale = Mathf.Clamp(State.morale, 0, 100);
-            State.unrest = Mathf.Clamp(State.unrest, 0, 100);
-            State.sickness = Mathf.Clamp(State.sickness, 0, 100);
+            State.ClampAllMeters();
 
             Telemetry.RecordZoneLost(perim.definition.zoneName, State.currentDay);
             OnStateChanged?.Invoke();

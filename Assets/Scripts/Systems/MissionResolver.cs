@@ -1,4 +1,3 @@
-using System.Linq;
 using SiegeSurvival.Core;
 using SiegeSurvival.Data;
 using SiegeSurvival.Data.Runtime;
@@ -11,24 +10,30 @@ namespace SiegeSurvival.Systems
     /// </summary>
     public static class MissionResolver
     {
+        /// <summary>
+        /// Returns a risk modifier based on current fuel level.
+        /// Higher values mean more risk (worse outcomes).
+        /// </summary>
+        private static float GetFuelRiskModifier(int fuel)
+        {
+            if (fuel >= 100) return 0f;
+            if (fuel >= 50) return 0.05f;
+            if (fuel >= 1) return 0.15f;
+            return 0.25f;
+        }
+
         public static void ResolveMission(GameState state, SimulationContext ctx, CausalityLog log, RandomProvider rng)
         {
             if (state.activeMission == null) return;
 
             // Check if mission duration has elapsed
-            var def = Resources.LoadAll<MissionDefinition>("Data/Missions")
-                .FirstOrDefault(x => x.missionId == state.activeMission.missionId);
+            var def = DefinitionRegistry.GetMission(state.activeMission.missionId);
             int duration = def != null ? def.Duration : 5;
 
             if (state.currentDay < state.activeMission.startDay + duration - 1)
                 return; // Mission still in progress
 
-            // Calculate fuel risk modifier
-            float fuelRiskMod = 0f;
-            if (state.fuel >= 100) fuelRiskMod = 0f;
-            else if (state.fuel >= 50) fuelRiskMod = 0.05f;
-            else if (state.fuel >= 1) fuelRiskMod = 0.15f;
-            else fuelRiskMod = 0.25f;
+            float fuelRiskMod = GetFuelRiskModifier(state.fuel);
 
             float roll = rng.Range01();
 
@@ -187,11 +192,7 @@ namespace SiegeSurvival.Systems
 
         public static void GetMissionOdds(MissionId id, GameState state, out float[] probs, out string[] labels)
         {
-            float fuelRiskMod = 0f;
-            if (state.fuel >= 100) fuelRiskMod = 0f;
-            else if (state.fuel >= 50) fuelRiskMod = 0.05f;
-            else if (state.fuel >= 1) fuelRiskMod = 0.15f;
-            else fuelRiskMod = 0.25f;
+            float fuelRiskMod = GetFuelRiskModifier(state.fuel);
 
             switch (id)
             {

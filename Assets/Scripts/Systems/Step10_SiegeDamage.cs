@@ -52,38 +52,7 @@ namespace SiegeSurvival.Systems
                 $"Siege: (3+{effectiveIntensity}) × {perimFactor:F1} - {ctx.siegeDamageReduction} guards × {ctx.siegeDamageMult:F2} L11 = {finalDamage} dmg → {perim.definition.zoneName} ({perim.currentIntegrity}/{perim.definition.baseIntegrity})");
 
             // Check zone loss
-            if (perim.currentIntegrity <= 0)
-            {
-                perim.currentIntegrity = 0;
-
-                if (perim.definition.isKeep)
-                {
-                    ctx.keepBreached = true;
-                    log.AddFlat(CausalityCategory.Integrity, "KEEP BREACHED", 0,
-                        "Keep integrity reached 0 — BREACH GAME OVER");
-                }
-                else
-                {
-                    perim.isLost = true;
-
-                    // Apply on-loss effects (natural)
-                    state.unrest += perim.definition.onLossUnrest;
-                    state.sickness += perim.definition.onLossSickness;
-                    state.morale += perim.definition.onLossMorale;
-
-                    log.AddFlat(CausalityCategory.Integrity, $"Zone Lost: {perim.definition.zoneName}", 0,
-                        $"{perim.definition.zoneName} LOST! Unrest +{perim.definition.onLossUnrest}, Sickness +{perim.definition.onLossSickness}, Morale {perim.definition.onLossMorale}");
-
-                    if (!string.IsNullOrEmpty(perim.definition.onLossProductionDesc))
-                    {
-                        log.AddFlat(CausalityCategory.Production, $"Zone Loss Production",
-                            0, perim.definition.onLossProductionDesc);
-                    }
-
-                    // Move population inward
-                    PopulationManager.ForcePopulationInward(state, perim, log);
-                }
-            }
+            ZoneLossHelper.TryApplyZoneLoss(state, perim, ctx, log, "Siege Damage");
         }
     }
 }

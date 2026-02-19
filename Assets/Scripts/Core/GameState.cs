@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SiegeSurvival.Data;
 using SiegeSurvival.Data.Runtime;
+using UnityEngine;
 
 namespace SiegeSurvival.Core
 {
@@ -157,6 +158,16 @@ namespace SiegeSurvival.Core
                 }
                 return count;
             }
+        }
+
+        // ============= Meter Helpers =============
+
+        /// <summary>Clamps morale, unrest, and sickness to [0, 100].</summary>
+        public void ClampAllMeters()
+        {
+            morale = Mathf.Clamp(morale, 0, 100);
+            unrest = Mathf.Clamp(unrest, 0, 100);
+            sickness = Mathf.Clamp(sickness, 0, 100);
         }
     }
 }

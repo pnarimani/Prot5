@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using FastSpring;
 using SiegeSurvival.Core;
 using SiegeSurvival.Data;
@@ -241,20 +240,17 @@ namespace SiegeSurvival.UI.Widgets
 
         static LawDefinition GetLawDefinition(LawId id)
         {
-            return Resources.LoadAll<LawDefinition>("Data/Laws")
-                .FirstOrDefault(x => x.lawId == id);
+            return DefinitionRegistry.GetLaw(id);
         }
 
         static MissionDefinition GetMissionDefinition(MissionId id)
         {
-            return Resources.LoadAll<MissionDefinition>("Data/Missions")
-                .FirstOrDefault(x => x.missionId == id);
+            return DefinitionRegistry.GetMission(id);
         }
 
         static EmergencyOrderDefinition GetEmergencyOrderDefinition(EmergencyOrderId id)
         {
-            return Resources.LoadAll<EmergencyOrderDefinition>("Data/EmergencyOrders")
-                .FirstOrDefault(x => x.orderId == id);
+            return DefinitionRegistry.GetOrder(id);
         }
 
         public void Show()
