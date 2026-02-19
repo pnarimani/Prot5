@@ -36,6 +36,7 @@ namespace SiegeSurvival.UI.Panels
                 return;
 
             _gm.OnStateChanged += Refresh;
+            Canvas.ForceUpdateCanvases();
             Refresh();
         }
 

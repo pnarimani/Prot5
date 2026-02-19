@@ -25,7 +25,7 @@ namespace SiegeSurvival.UI.Widgets
                 return;
             }
 
-            var width = _lag.rectTransform.rect.width;
+            var width = Mathf.Abs(_lag.rectTransform.rect.width);
             var fillAmount = width - _fill.padding.z;
             var p = _lag.padding;
             p.z = Mathf.Lerp(p.z, _fill.padding.z, Time.deltaTime * 5);
@@ -35,7 +35,7 @@ namespace SiegeSurvival.UI.Widgets
 
         public void SetValue(float value, bool animated = true)
         {
-            var width = _lag.rectTransform.rect.width;
+            var width = Mathf.Abs(_lag.rectTransform.rect.width);
             var padding = _fill.padding;
             padding.z = width * (1 - value);
             _fill.padding = padding;

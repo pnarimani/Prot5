@@ -33,7 +33,7 @@ namespace SiegeSurvival.UI.Widgets
         {
             _button = this.FindChildRecursive<Button>("#ActivationButton");
             _buttonText = this.FindChildRecursive<TextMeshProUGUI>("#Text");
-            _title = this.FindChildRecursive<TextMeshProUGUI>("#Title");
+            _title = this.FindChildRecursive<TextMeshProUGUI>("#ActionTitle");
             _desc = this.FindChildRecursive<TextMeshProUGUI>("#Desc");
             _cons = this.FindChildRecursive<TextMeshProUGUI>("#Cons");
             _actionPanel = this.FindChildRecursive<RectTransform>("#ChosenActionPanel");
@@ -96,6 +96,8 @@ namespace SiegeSurvival.UI.Widgets
 
         void RefreshWidget()
         {
+            if (_gm.State == null)
+                return;
             // Mission in-progress takes priority over scheduling
             if (_actionType == ActionType.Mission && _gm.State.activeMission != null)
             {

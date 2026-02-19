@@ -373,7 +373,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 768702122929568039, guid: f3787ca273000944f9d77cb4c9d9437c, type: 3}
       propertyPath: m_Name
-      value: ActionContainer (1)
+      value: Mission
       objectReference: {fileID: 0}
     - target: {fileID: 1144841421895077997, guid: f3787ca273000944f9d77cb4c9d9437c, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1183,7 +1183,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Siege Level: 1/6'
+  m_text: 'Siege Level: --/--'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6357b8266ac92734692d784b7b533113, type: 2}
   m_sharedMaterial: {fileID: -6177715017274640591, guid: 6357b8266ac92734692d784b7b533113, type: 2}
@@ -2278,7 +2278,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 768702122929568039, guid: f3787ca273000944f9d77cb4c9d9437c, type: 3}
       propertyPath: m_Name
-      value: ActionContainer (2)
+      value: Order
       objectReference: {fileID: 0}
     - target: {fileID: 1144841421895077997, guid: f3787ca273000944f9d77cb4c9d9437c, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4489,7 +4489,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 768702122929568039, guid: f3787ca273000944f9d77cb4c9d9437c, type: 3}
       propertyPath: m_Name
-      value: ActionContainer
+      value: Law
       objectReference: {fileID: 0}
     - target: {fileID: 1144841421895077997, guid: f3787ca273000944f9d77cb4c9d9437c, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4956,14 +4956,6 @@ PrefabInstance:
     - target: {fileID: 3281146052954706241, guid: be8742cacb441dd4aaa27c9e776d5489, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3440992407641543818, guid: be8742cacb441dd4aaa27c9e776d5489, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3440992407641543818, guid: be8742cacb441dd4aaa27c9e776d5489, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.4499998
       objectReference: {fileID: 0}
     - target: {fileID: 3532389535170644032, guid: be8742cacb441dd4aaa27c9e776d5489, type: 3}
       propertyPath: m_Sprite
