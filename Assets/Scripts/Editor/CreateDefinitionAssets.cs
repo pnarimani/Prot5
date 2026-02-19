@@ -94,47 +94,47 @@ namespace SiegeSurvival.Editor
         {
             EnsureFolder($"{BasePath}/Laws");
 
-            CreateLaw("L01_StrictRations", LawId.L1_StrictRations, "Strict Rations",
+            CreateLaw("L01_StrictRations", LawId.L01_StrictRations, "Strict Rations",
                 "Reduce food rations to stretch supply.",
                 "Always available",
                 "On Enact: Morale -10\nOngoing: Food consumption -25%, Unrest +5/day");
 
-            CreateLaw("L02_DilutedWater", LawId.L2_DilutedWater, "Diluted Water",
+            CreateLaw("L02_DilutedWater", LawId.L02_DilutedWater, "Diluted Water",
                 "Dilute water supply to reduce consumption.",
                 "Water < 100 or water deficit occurred",
                 "On Enact: Morale -5\nOngoing: Water consumption -20%, Sickness +5/day");
 
-            CreateLaw("L03_ExtendedShifts", LawId.L3_ExtendedShifts, "Extended Shifts",
+            CreateLaw("L03_ExtendedShifts", LawId.L03_ExtendedShifts, "Extended Shifts",
                 "Force workers into longer hours.",
                 "Day ≥ 5",
                 "On Enact: Morale -15\nOngoing: All production +25%, Sickness +8/day");
 
-            CreateLaw("L04_MandatoryGuardService", LawId.L4_MandatoryGuardService, "Mandatory Guard Service",
+            CreateLaw("L04_MandatoryGuardService", LawId.L04_MandatoryGuardService, "Mandatory Guard Service",
                 "Draft workers into guard duty.",
                 "Unrest > 40",
                 "On Enact: 10 Workers → Guards, Morale -10\nOngoing: Food consumption +15/day");
 
-            CreateLaw("L05_EmergencyShelters", LawId.L5_EmergencyShelters, "Emergency Shelters",
+            CreateLaw("L05_EmergencyShelters", LawId.L05_EmergencyShelters, "Emergency Shelters",
                 "Open makeshift shelters in the Inner District.",
                 "Any zone lost",
                 "On Enact: Unrest +10\nOngoing: Inner District +30 capacity, Sickness +10/day");
 
-            CreateLaw("L06_PublicExecutions", LawId.L6_PublicExecutions, "Public Executions",
+            CreateLaw("L06_PublicExecutions", LawId.L06_PublicExecutions, "Public Executions",
                 "Execute troublemakers publicly.",
                 "Unrest > 60",
                 "On Enact: Unrest -25, Morale -20, 5 deaths (healthy first)\nOngoing: (none)");
 
-            CreateLaw("L07_FaithProcessions", LawId.L7_FaithProcessions, "Faith Processions",
+            CreateLaw("L07_FaithProcessions", LawId.L07_FaithProcessions, "Faith Processions",
                 "Organize religious processions to boost morale.",
                 "Morale < 40",
                 "On Enact: Materials -10, Morale +15, Unrest +5\nOngoing: (none)");
 
-            CreateLaw("L08_FoodConfiscation", LawId.L8_FoodConfiscation, "Food Confiscation",
+            CreateLaw("L08_FoodConfiscation", LawId.L08_FoodConfiscation, "Food Confiscation",
                 "Confiscate food from private stores.",
                 "Food < 100",
                 "On Enact: Food +100, Unrest +20, Morale -20\nOngoing: (none)");
 
-            CreateLaw("L09_MedicalTriage", LawId.L9_MedicalTriage, "Medical Triage",
+            CreateLaw("L09_MedicalTriage", LawId.L09_MedicalTriage, "Medical Triage",
                 "Only treat those likely to survive.",
                 "Medicine < 20",
                 "On Enact: (none)\nOngoing: Clinic medicine cost -50%, 5 Sick die/day");

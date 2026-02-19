@@ -197,15 +197,15 @@ namespace SiegeSurvival.Core
         {
             switch (lawId)
             {
-                case LawId.L1_StrictRations: return true;
-                case LawId.L2_DilutedWater: return State.water < 100; // or water deficit occurred
-                case LawId.L3_ExtendedShifts: return State.currentDay >= 5;
-                case LawId.L4_MandatoryGuardService: return State.unrest > 40;
-                case LawId.L5_EmergencyShelters: return State.AnyZoneLost;
-                case LawId.L6_PublicExecutions: return State.unrest > 60;
-                case LawId.L7_FaithProcessions: return State.morale < 40;
-                case LawId.L8_FoodConfiscation: return State.food < 100;
-                case LawId.L9_MedicalTriage: return State.medicine < 20;
+                case LawId.L01_StrictRations: return true;
+                case LawId.L02_DilutedWater: return State.water < 100; // or water deficit occurred
+                case LawId.L03_ExtendedShifts: return State.currentDay >= 5;
+                case LawId.L04_MandatoryGuardService: return State.unrest > 40;
+                case LawId.L05_EmergencyShelters: return State.AnyZoneLost;
+                case LawId.L06_PublicExecutions: return State.unrest > 60;
+                case LawId.L07_FaithProcessions: return State.morale < 40;
+                case LawId.L08_FoodConfiscation: return State.food < 100;
+                case LawId.L09_MedicalTriage: return State.medicine < 20;
                 case LawId.L10_Curfew: return State.unrest > 50;
                 case LawId.L11_AbandonOuterRing:
                     return !State.OuterFarms.isLost && State.OuterFarms.currentIntegrity < 40;
@@ -224,10 +224,10 @@ namespace SiegeSurvival.Core
             // Check specific costs
             switch (lawId)
             {
-                case LawId.L4_MandatoryGuardService:
+                case LawId.L04_MandatoryGuardService:
                     if (State.healthyWorkers < 10) return false;
                     break;
-                case LawId.L7_FaithProcessions:
+                case LawId.L07_FaithProcessions:
                     if (State.materials < 10) return false;
                     break;
             }
@@ -245,42 +245,42 @@ namespace SiegeSurvival.Core
             // Apply immediate on-enact effects
             switch (lawId)
             {
-                case LawId.L1_StrictRations:
+                case LawId.L01_StrictRations:
                     State.morale -= 10;
                     break;
-                case LawId.L2_DilutedWater:
+                case LawId.L02_DilutedWater:
                     State.morale -= 5;
                     break;
-                case LawId.L3_ExtendedShifts:
+                case LawId.L03_ExtendedShifts:
                     State.morale -= 15;
                     break;
-                case LawId.L4_MandatoryGuardService:
+                case LawId.L04_MandatoryGuardService:
                     State.healthyWorkers -= 10;
                     State.guards += 10;
                     State.morale -= 10;
                     PopulationManager.ValidateWorkerAllocations(State);
                     break;
-                case LawId.L5_EmergencyShelters:
+                case LawId.L05_EmergencyShelters:
                     State.unrest += 10;
                     break;
-                case LawId.L6_PublicExecutions:
+                case LawId.L06_PublicExecutions:
                     State.unrest -= 25;
                     State.morale -= 20;
                     // L6 priority: Healthy first
                     PopulationManager.ApplyDeathsHealthyFirst(State, 5, Log, "Public Executions (L6) enactment");
                     PopulationManager.RecomputeZonePopulationsAfterDeaths(State);
                     break;
-                case LawId.L7_FaithProcessions:
+                case LawId.L07_FaithProcessions:
                     State.materials -= 10;
                     State.morale += 15;
                     State.unrest += 5;
                     break;
-                case LawId.L8_FoodConfiscation:
+                case LawId.L08_FoodConfiscation:
                     State.food += 100;
                     State.unrest += 20;
                     State.morale -= 20;
                     break;
-                case LawId.L9_MedicalTriage:
+                case LawId.L09_MedicalTriage:
                     // No immediate effect
                     break;
                 case LawId.L10_Curfew:

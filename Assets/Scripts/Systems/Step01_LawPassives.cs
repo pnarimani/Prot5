@@ -14,7 +14,7 @@ namespace SiegeSurvival.Systems
             {
                 switch (lawId)
                 {
-                    case LawId.L1_StrictRations:
+                    case LawId.L01_StrictRations:
                         ctx.foodConsumptionMult *= 0.75f;
                         ctx.unrestDelta += 5;
                         log.AddMult(CausalityCategory.Consumption, "Strict Rations (L1)", 0.75f,
@@ -23,7 +23,7 @@ namespace SiegeSurvival.Systems
                             "Unrest +5/day from rationing");
                         break;
 
-                    case LawId.L2_DilutedWater:
+                    case LawId.L02_DilutedWater:
                         ctx.waterConsumptionMult *= 0.8f;
                         ctx.sicknessDelta += 5;
                         log.AddMult(CausalityCategory.Consumption, "Diluted Water (L2)", 0.8f,
@@ -32,7 +32,7 @@ namespace SiegeSurvival.Systems
                             "Sickness +5/day from diluted water");
                         break;
 
-                    case LawId.L3_ExtendedShifts:
+                    case LawId.L03_ExtendedShifts:
                         ctx.foodProductionMult *= 1.25f;
                         ctx.waterProductionMult *= 1.25f;
                         ctx.materialsProductionMult *= 1.25f;
@@ -44,13 +44,13 @@ namespace SiegeSurvival.Systems
                             "Sickness +8/day from overwork");
                         break;
 
-                    case LawId.L4_MandatoryGuardService:
+                    case LawId.L04_MandatoryGuardService:
                         ctx.flatFoodConsumption += 15;
                         log.AddFlat(CausalityCategory.Consumption, "Mandatory Guard Service (L4)", 15,
                             "Food +15/day extra consumption");
                         break;
 
-                    case LawId.L5_EmergencyShelters:
+                    case LawId.L05_EmergencyShelters:
                         // Increase Inner District effective capacity
                         state.InnerDistrict.effectiveCapacity = state.InnerDistrict.definition.capacity + 30;
                         ctx.sicknessDelta += 10;
@@ -60,19 +60,19 @@ namespace SiegeSurvival.Systems
                             "Sickness +10/day from overcrowded shelters");
                         break;
 
-                    case LawId.L6_PublicExecutions:
+                    case LawId.L06_PublicExecutions:
                         // No ongoing effect
                         break;
 
-                    case LawId.L7_FaithProcessions:
+                    case LawId.L07_FaithProcessions:
                         // No ongoing effect
                         break;
 
-                    case LawId.L8_FoodConfiscation:
+                    case LawId.L08_FoodConfiscation:
                         // No ongoing effect
                         break;
 
-                    case LawId.L9_MedicalTriage:
+                    case LawId.L09_MedicalTriage:
                         ctx.clinicMedicineCostMult *= 0.5f;
                         // Kill 5 Sick/day (or all Sick if <5)
                         int sickToKill = System.Math.Min(5, state.sick);

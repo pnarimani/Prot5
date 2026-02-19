@@ -73,7 +73,7 @@ namespace SiegeSurvival.Core
         public static int GetClinicMedicineCost(GameState s)
         {
             int units = s.workerAllocation[JobSlot.ClinicStaff] / 5;
-            float medCostMult = s.enactedLaws.Contains(LawId.L9_MedicalTriage) ? 0.5f : 1f;
+            float medCostMult = s.enactedLaws.Contains(LawId.L09_MedicalTriage) ? 0.5f : 1f;
             return units * Mathf.CeilToInt(5 * medCostMult);
         }
 
@@ -168,7 +168,7 @@ namespace SiegeSurvival.Core
         public static float GetLawProductionMult(GameState s)
         {
             float mult = 1f;
-            if (s.enactedLaws.Contains(LawId.L3_ExtendedShifts)) mult *= 1.25f;
+            if (s.enactedLaws.Contains(LawId.L03_ExtendedShifts)) mult *= 1.25f;
             mult *= GetLawAllProdMult(s);
             return mult;
         }

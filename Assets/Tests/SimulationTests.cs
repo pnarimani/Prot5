@@ -197,7 +197,7 @@ namespace SiegeSurvival.Tests
         [Test]
         public void StrictRations_ReducesFoodConsumption()
         {
-            _state.enactedLaws.Add(LawId.L1_StrictRations);
+            _state.enactedLaws.Add(LawId.L01_StrictRations);
 
             Step01_LawPassives.Execute(_state, _ctx, _log);
 
@@ -235,7 +235,7 @@ namespace SiegeSurvival.Tests
         [Test]
         public void MedicalTriage_KillsSickDaily()
         {
-            _state.enactedLaws.Add(LawId.L9_MedicalTriage);
+            _state.enactedLaws.Add(LawId.L09_MedicalTriage);
             _state.sick = 20;
 
             Step01_LawPassives.Execute(_state, _ctx, _log);
