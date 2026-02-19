@@ -8,7 +8,7 @@ namespace SiegeSurvival.UI.Widgets
         RectMask2D _fill, _lag;
 
         float _lagTimer;
-        
+
         void Awake()
         {
             _fill = this.FindChildRecursive<RectMask2D>("#Fill");
@@ -25,17 +25,28 @@ namespace SiegeSurvival.UI.Widgets
                 return;
             }
 
+            var width = _lag.rectTransform.rect.width;
+            var fillAmount = width - _fill.padding.z;
             var p = _lag.padding;
             p.z = Mathf.Lerp(p.z, _fill.padding.z, Time.deltaTime * 5);
+            p.x = fillAmount;
             _lag.padding = p;
         }
 
-        public void SetValue(float value)
+        public void SetValue(float value, bool animated = true)
         {
             var width = _lag.rectTransform.rect.width;
             var padding = _fill.padding;
-            padding.z = width * value;
+            padding.z = width * (1 - value);
             _fill.padding = padding;
+
+            if (!animated)
+            {
+                var p = _lag.padding;
+                p.z = _fill.padding.z;
+                p.x = width * value;
+                _lag.padding = p;
+            }
         }
     }
 }

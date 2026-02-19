@@ -12,6 +12,7 @@ namespace SiegeSurvival.UI.Panels
         ProgressBarWidget _sickness;
 
         GameManager _gm;
+        bool _inited;
 
         void Awake()
         {
@@ -38,9 +39,10 @@ namespace SiegeSurvival.UI.Panels
             if (s == null)
                 return;
 
-            _unrest.SetValue(s.unrest / 100f);
-            _morale.SetValue(s.morale / 100f);
-            _sickness.SetValue(s.sickness / 100f);
+            _unrest.SetValue(s.unrest / 100f, _inited);
+            _morale.SetValue(s.morale / 100f, _inited);
+            _sickness.SetValue(s.sickness / 100f, _inited);
+            _inited = true;
         }
 
         ProgressBarWidget Find(string unrest) => this.FindChildRecursive<Transform>(unrest).GetComponentInChildren<ProgressBarWidget>();

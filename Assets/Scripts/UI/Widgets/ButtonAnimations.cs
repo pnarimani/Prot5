@@ -20,8 +20,8 @@ namespace SiegeSurvival
         {
             if (!_spring.IsAtEquilibrium)
                 return;
-            _spring.BumpRotation(Random.Range(.3f, .7f) * RandomSign())
-                .BumpScale(5f);
+            _spring.BumpRotation(Random.Range(.1f, .3f) * RandomSign())
+                .BumpScale(3f);
 
             // if (_enterClip != null)
             //     SfxPlayer.Play(_enterClip, 0.5f);

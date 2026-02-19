@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using SiegeSurvival;
 using SiegeSurvival.Core;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,18 +17,42 @@ namespace SiegeSurvival.UI.Panels
         [Header("Layout")]
         public TextMeshProUGUI logText;
         public ScrollRect scrollRect;
+        
+        [Header("Popup (optional)")]
+        public GameObject popupRoot;
+        public Button closeButton;
 
         private GameManager _gm;
         private readonly List<string> _dayEntries = new();
         private readonly StringBuilder _currentDayActions = new();
         private int _lastRecordedDay;
+        
+        private void Awake()
+        {
+            if (popupRoot == null)
+                popupRoot = gameObject;
+            if (logText == null)
+                logText = this.FindChildRecursive<TextMeshProUGUI>("#LogText");
+            if (scrollRect == null)
+                scrollRect = GetComponentInChildren<ScrollRect>(true);
+            if (closeButton == null)
+                closeButton = this.FindChildRecursive<Button>("#CloseButton");
+        }
 
         private void Start()
         {
             _gm = GameManager.Instance;
-            _gm.OnStateChanged += OnStateChanged;
-            _gm.OnDaySimulated += OnDaySimulated;
-            _gm.OnPhaseChanged += OnPhaseChanged;
+            if (_gm != null)
+            {
+                _gm.OnStateChanged += OnStateChanged;
+                _gm.OnDaySimulated += OnDaySimulated;
+                _gm.OnPhaseChanged += OnPhaseChanged;
+            }
+            if (closeButton != null)
+            {
+                closeButton.onClick.AddListener(ClosePopup);
+                popupRoot?.SetActive(false);
+            }
             _lastRecordedDay = 0;
             ClearLog();
         }
@@ -40,6 +65,8 @@ namespace SiegeSurvival.UI.Panels
                 _gm.OnDaySimulated -= OnDaySimulated;
                 _gm.OnPhaseChanged -= OnPhaseChanged;
             }
+            if (closeButton != null)
+                closeButton.onClick.RemoveListener(ClosePopup);
         }
 
         public void ClearLog()
@@ -148,6 +175,17 @@ namespace SiegeSurvival.UI.Panels
                 Canvas.ForceUpdateCanvases();
                 scrollRect.verticalNormalizedPosition = 0f;
             }
+        }
+
+        public void OpenPopup()
+        {
+            popupRoot?.SetActive(true);
+            RebuildDisplay();
+        }
+
+        public void ClosePopup()
+        {
+            popupRoot?.SetActive(false);
         }
     }
 }
