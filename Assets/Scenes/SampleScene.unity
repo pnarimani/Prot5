@@ -573,6 +573,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1816045499}
     m_Modifications:
+    - target: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+      propertyPath: _safe.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+      propertyPath: _safe.g
+      value: 0.3962264
+      objectReference: {fileID: 0}
+    - target: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+      propertyPath: _safe.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8543619189994706277, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
       propertyPath: m_Name
       value: Zone (1)
@@ -1251,6 +1263,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1816045499}
     m_Modifications:
+    - target: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+      propertyPath: _safe.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+      propertyPath: _safe.g
+      value: 0.3962264
+      objectReference: {fileID: 0}
+    - target: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+      propertyPath: _safe.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8543619189994706277, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
       propertyPath: m_Name
       value: Zone (4)
@@ -1429,6 +1453,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &645202888 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+  m_PrefabInstance: {fileID: 5580638697548373486}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 973f00016d36474b870a025c595b5bc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SiegeSurvival::SiegeSurvival.UI.Widgets.ZoneWidget
 --- !u!1 &648830680
 GameObject:
   m_ObjectHideFlags: 0
@@ -2025,6 +2060,17 @@ MonoBehaviour:
     _frequency: 10
     _damping: 0.6
     _interpolation: 20
+--- !u!114 &923996012 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+  m_PrefabInstance: {fileID: 109272689}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 973f00016d36474b870a025c595b5bc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SiegeSurvival::SiegeSurvival.UI.Widgets.ZoneWidget
 --- !u!1001 &949923332
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2033,6 +2079,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1816045499}
     m_Modifications:
+    - target: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+      propertyPath: _safe.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+      propertyPath: _safe.g
+      value: 0.3962264
+      objectReference: {fileID: 0}
+    - target: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+      propertyPath: _safe.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8543619189994706277, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
       propertyPath: m_Name
       value: Zone (3)
@@ -2127,6 +2185,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 9024818637933080280, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
   m_PrefabInstance: {fileID: 949923332}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &949923334 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+  m_PrefabInstance: {fileID: 949923332}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 973f00016d36474b870a025c595b5bc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SiegeSurvival::SiegeSurvival.UI.Widgets.ZoneWidget
 --- !u!1001 &1077679147
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2762,6 +2831,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1141558499}
   m_CullTransparentMesh: 1
+--- !u!114 &1158868161 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+  m_PrefabInstance: {fileID: 581978714}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 973f00016d36474b870a025c595b5bc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SiegeSurvival::SiegeSurvival.UI.Widgets.ZoneWidget
 --- !u!1 &1177608499
 GameObject:
   m_ObjectHideFlags: 0
@@ -3027,6 +3107,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1816045499}
     m_Modifications:
+    - target: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+      propertyPath: _safe.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+      propertyPath: _safe.g
+      value: 0.3962264
+      objectReference: {fileID: 0}
+    - target: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+      propertyPath: _safe.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8543619189994706277, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
       propertyPath: m_Name
       value: Zone (2)
@@ -3499,6 +3591,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1500160146 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+  m_PrefabInstance: {fileID: 1285561636}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 973f00016d36474b870a025c595b5bc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SiegeSurvival::SiegeSurvival.UI.Widgets.ZoneWidget
 --- !u!1 &1533196274
 GameObject:
   m_ObjectHideFlags: 0
@@ -4161,6 +4264,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1816045499}
+  - component: {fileID: 1816045500}
   m_Layer: 5
   m_Name: Map
   m_TagString: Untagged
@@ -4192,6 +4296,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0.000011444, y: -470.3886}
   m_SizeDelta: {x: 729.7953, y: 729.7953}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1816045500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816045498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e1f456ac85740bbb2f25fbda61e3482, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SiegeSurvival::SiegeSurvival.UI.Panels.MyZonePanel
+  _zoneWidgets:
+  - {fileID: 645202888}
+  - {fileID: 923996012}
+  - {fileID: 1500160146}
+  - {fileID: 949923334}
+  - {fileID: 1158868161}
 --- !u!1 &1828300898
 GameObject:
   m_ObjectHideFlags: 0
@@ -4239,8 +4361,8 @@ MonoBehaviour:
   zoneDefinitions:
   - {fileID: 11400000, guid: 7f8e250b1ec2efd418534b74a8d8b2d6, type: 2}
   - {fileID: 11400000, guid: b2b387ec41ccc884c97a866772cbf8a3, type: 2}
-  - {fileID: 11400000, guid: 7e5e2afebd706ab449bb019596629c6c, type: 2}
   - {fileID: 11400000, guid: 732a01514c1acb641bdf908956582ae3, type: 2}
+  - {fileID: 11400000, guid: 7e5e2afebd706ab449bb019596629c6c, type: 2}
   - {fileID: 11400000, guid: 7a5a3b0949eb8ca458ae1424f19fd81a, type: 2}
 --- !u!1 &1844693595
 GameObject:
@@ -4626,6 +4748,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1816045499}
     m_Modifications:
+    - target: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+      propertyPath: _safe.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+      propertyPath: _safe.g
+      value: 0.3962264
+      objectReference: {fileID: 0}
+    - target: {fileID: 279135957868850136, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
+      propertyPath: _safe.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8543619189994706277, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
       propertyPath: m_Name
       value: Zone
