@@ -16,5 +16,5 @@ MonoBehaviour:
   displayName: Night Raid on Siege Camp
   description: Attack the siege camp to weaken the enemy. Costs 40 Fuel. +20% capture
     chance if fuel < 40.
-  outcomesDescription: "Great: -10 Siege Intensity (40%) | Moderate: -5 Siege Intensity
-    (40%) | Captured: +1 Siege Intensity, 5 deaths, +15 Unrest (20%\u219240%)"
+  outcomesDescription: "Great: -10 Siege Intensity | Moderate: -5 Siege Intensity
+    | Captured: +1 Siege Intensity, 5 deaths, +15 Unrest"

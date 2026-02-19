@@ -32,10 +32,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4020420536803719164}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -87.4806, y: 0.000017166}
-  m_SizeDelta: {x: 833.0388, y: 22.9369}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -87.48059, y: 0.000017166}
+  m_SizeDelta: {x: -204.96118, y: 22.9369}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &45554859871198373
 CanvasRenderer:
@@ -176,7 +176,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 100}
+  m_SizeDelta: {x: 1038.2, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &9099678937645975491
 MonoBehaviour:
@@ -226,10 +226,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4020420536803719164}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -87.4806, y: -26.468}
-  m_SizeDelta: {x: 833.0388, y: 22.9369}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -87.48059, y: 23.531998}
+  m_SizeDelta: {x: -204.96118, y: 22.9369}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6512030153238780448
 CanvasRenderer:
@@ -438,10 +438,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4020420536803719164}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -87.4806, y: 31.5314}
-  m_SizeDelta: {x: 833.0388, y: 22.9369}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -87.48059, y: -23.532}
+  m_SizeDelta: {x: -204.96118, y: 22.936897}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1743528477971013391
 CanvasRenderer:
@@ -498,8 +498,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26
-  m_fontSizeBase: 26
+  m_fontSize: 21.8
+  m_fontSizeBase: 21.8
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -561,7 +561,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1814436848446957796, guid: 99a5ded151e460d4d9a3b7670faaa90e, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1814436848446957796, guid: 99a5ded151e460d4d9a3b7670faaa90e, type: 3}
       propertyPath: m_AnchorMax.y
@@ -569,7 +569,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1814436848446957796, guid: 99a5ded151e460d4d9a3b7670faaa90e, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1814436848446957796, guid: 99a5ded151e460d4d9a3b7670faaa90e, type: 3}
       propertyPath: m_AnchorMin.y
@@ -613,7 +613,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1814436848446957796, guid: 99a5ded151e460d4d9a3b7670faaa90e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 424
+      value: -95
       objectReference: {fileID: 0}
     - target: {fileID: 1814436848446957796, guid: 99a5ded151e460d4d9a3b7670faaa90e, type: 3}
       propertyPath: m_AnchoredPosition.y

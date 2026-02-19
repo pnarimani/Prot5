@@ -15,5 +15,5 @@ MonoBehaviour:
   missionId: 0
   displayName: Forage Beyond Walls
   description: Send 10 workers beyond the walls to scavenge food.
-  outcomesDescription: "Great: +120 Food (60%) | Moderate: +80 Food (25%) | Ambushed:
-    5 deaths (15%\u219230% if siege\u22654)"
+  outcomesDescription: "Great: +120 Food | Moderate: +80 Food | Ambushed:
+    5 deaths"

@@ -15,5 +15,5 @@ MonoBehaviour:
   missionId: 3
   displayName: Negotiate with Black Marketeers
   description: Make contact with smugglers for trade.
-  outcomesDescription: 'Great: Choose resource +100 (45%) | Moderate: +50 Food, +50
-    Water (30%) | Betrayed: -50 Materials, +10 Unrest (25%)'
+  outcomesDescription: 'Great: Choose resource +100 | Moderate: +50 Food, +50
+    Water | Betrayed: -50 Materials, +10 Unrest'

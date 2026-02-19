@@ -15,5 +15,5 @@ MonoBehaviour:
   missionId: 2
   displayName: Search Abandoned Homes
   description: Loot evacuated buildings for supplies.
-  outcomesDescription: 'Great: +60 Materials, +40 Medicine (50%) | Moderate: +40
-    Materials (30%) | Trapped: 3 deaths, -20 Materials (20%)'
+  outcomesDescription: 'Great: +60 Materials, +40 Medicine | Moderate: +40
+    Materials | Trapped: 3 deaths, -20 Materials'
