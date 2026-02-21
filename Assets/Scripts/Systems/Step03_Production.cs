@@ -121,15 +121,14 @@ namespace SiegeSurvival.Systems
             // === 3f. Guard Duty (automatic) ===
             int guardUnits = state.guards / 5;
             ctx.siegeDamageReduction = guardUnits * 1;
-            ctx.guardUnrestReduction = guardUnits * 3;
-            ctx.unrestDelta -= ctx.guardUnrestReduction;
+            ctx.guardUnrestGrowthModifier = guardUnits > 0 ? 0.5f : 1f;
 
             if (guardUnits > 0)
             {
                 log.AddFlat(CausalityCategory.SiegeDamage, "Guards", -ctx.siegeDamageReduction,
                     $"Guards reduce siege damage by {ctx.siegeDamageReduction}");
-                log.AddFlat(CausalityCategory.Unrest, "Guards", -ctx.guardUnrestReduction,
-                    $"Guards reduce unrest by {ctx.guardUnrestReduction}/day");
+                log.AddFlat(CausalityCategory.Unrest, "Guards", 0,
+                    $"Guards reduce unrest growth by 50%");
             }
 
             // === 3g. Clinic Staff ===

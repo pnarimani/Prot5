@@ -72,6 +72,19 @@ namespace SiegeSurvival.Systems
                 }
             }
 
+            // Guard presence reduces unrest growth by 50%
+            if (ctx.guardUnrestGrowthModifier < 1f && unrestDelta > 0)
+            {
+                int before = unrestDelta;
+                unrestDelta = Mathf.FloorToInt(unrestDelta * ctx.guardUnrestGrowthModifier);
+                int reduction = before - unrestDelta;
+                if (reduction > 0)
+                {
+                    log.AddFlat(CausalityCategory.Unrest, "Guards (-50% growth)", -reduction,
+                        $"Unrest growth reduced by {reduction} (Guards -50%)");
+                }
+            }
+
             int oldUnrest = state.unrest;
             state.unrest = Mathf.Clamp(state.unrest + unrestDelta, 0, 100);
 

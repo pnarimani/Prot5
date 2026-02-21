@@ -48,7 +48,7 @@ namespace SiegeSurvival.Core
         // --- Production results (stored in Step 3, applied in Step 11) ---
         public int repairAmount;
         public int siegeDamageReduction; // from guards
-        public int guardUnrestReduction;
+        public float guardUnrestGrowthModifier = 1f; // 0.5f = 50% unrest growth
         public int sanitationReduction;
         public int clinicReduction;
 

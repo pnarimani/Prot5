@@ -33,10 +33,10 @@ namespace SiegeSurvival
 
             int guardUnits = s.guards / 5;
             int siegeReduction = guardUnits * 1;
-            int unrestReduction = guardUnits * 3;
+            string unrestEffect = guardUnits > 0 ? "Unrest Growth -50%" : "No effect";
 
             if (_projection != null)
-                _projection.text = $"{s.guards} guards — Siege Dmg -{siegeReduction}, Unrest -{unrestReduction}/day";
+                _projection.text = $"{s.guards} guards — Siege Dmg -{siegeReduction}, {unrestEffect}";
 
             string warn = string.Empty;
             if (s.guards < 5)
