@@ -76,6 +76,7 @@ namespace SiegeSurvival.UI.Panels
             }
 
             var eventLogPanel = Instantiate(prefab, transform.root);
+            eventLogPanel.showLatestEntryOnly = false;
             var popupRoot = eventLogPanel.popupRoot != null ? eventLogPanel.popupRoot : eventLogPanel.gameObject;
             if (popupRoot.TryGetComponent<RectTransform>(out var rt))
                 StretchToParent(rt);

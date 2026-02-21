@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using SiegeSurvival.Data;
 using SiegeSurvival.Data.Runtime;
 using SiegeSurvival.Systems;
@@ -25,12 +26,15 @@ namespace SiegeSurvival.Core
         public RandomProvider Rng { get; private set; }
         public SimulationContext LastSimContext { get; private set; }
         public TelemetryLogger Telemetry { get; private set; }
+        public IReadOnlyList<string> DayReports => _dayReports;
 
         // --- Events (UI subscribes to these) ---
         public event Action OnPhaseChanged;
         public event Action OnStateChanged;
         public event Action<SimulationContext> OnDaySimulated;
         public event Action OnScheduledActionChanged;
+
+        readonly List<string> _dayReports = new();
 
         private void Start()
         {
@@ -44,6 +48,7 @@ namespace SiegeSurvival.Core
             Rng = new RandomProvider();
             Log = new CausalityLog();
             Telemetry = new TelemetryLogger();
+            _dayReports.Clear();
 
             State = new GameState();
             InitializeRun();
@@ -134,6 +139,8 @@ namespace SiegeSurvival.Core
             Phase = GamePhase.Simulating;
             OnPhaseChanged?.Invoke();
 
+            var scheduledActionSummary = GetScheduledActionSummary();
+
             // Execute scheduled player action
             ExecuteScheduledAction();
 
@@ -145,6 +152,7 @@ namespace SiegeSurvival.Core
 
             // Telemetry snapshot
             Telemetry.RecordDayEnd(State, Log);
+            _dayReports.Add(BuildDayReportEntry(LastSimContext, scheduledActionSummary));
 
             // Determine next phase
             if (State.isGameOver)
@@ -163,6 +171,66 @@ namespace SiegeSurvival.Core
             OnDaySimulated?.Invoke(LastSimContext);
             OnPhaseChanged?.Invoke();
             OnStateChanged?.Invoke();
+        }
+
+        string GetScheduledActionSummary()
+        {
+            if (State.scheduledLaw.HasValue)
+                return $"Law enacted: {State.scheduledLaw.Value}";
+
+            if (State.scheduledOrder.HasValue)
+            {
+                if (State.scheduledOrder.Value == EmergencyOrderId.O5_QuarantineDistrict &&
+                    State.scheduledQuarantineZone >= 0 &&
+                    State.scheduledQuarantineZone < State.zones.Length)
+                {
+                    string zoneName = State.zones[State.scheduledQuarantineZone].definition.zoneName;
+                    return $"Emergency order: {State.scheduledOrder.Value} ({zoneName})";
+                }
+
+                return $"Emergency order: {State.scheduledOrder.Value}";
+            }
+
+            if (State.scheduledMission.HasValue)
+                return $"Mission started: {State.scheduledMission.Value}";
+
+            return "No scheduled player action";
+        }
+
+        string BuildDayReportEntry(SimulationContext ctx, string scheduledActionSummary)
+        {
+            int day = State.currentDay - 1;
+
+            var sb = new StringBuilder();
+            sb.AppendLine($"=========== DAY {day} ==============");
+            sb.AppendLine("<b>Player Actions:</b>");
+            sb.AppendLine($"  • {scheduledActionSummary}");
+            sb.AppendLine("<b>Simulation:</b>");
+
+            int foodNet = State.food - ctx.foodStart;
+            int waterNet = State.water - ctx.waterStart;
+            int fuelNet = State.fuel - ctx.fuelStart;
+            sb.AppendLine($"  Resources: Food {foodNet:+0;-0;0}, Water {waterNet:+0;-0;0}, Fuel {fuelNet:+0;-0;0}");
+
+            int moraleNet = State.morale - ctx.moraleStart;
+            int unrestNet = State.unrest - ctx.unrestStart;
+            int sickNet = State.sickness - ctx.sicknessStart;
+            sb.AppendLine($"  Meters: Morale {moraleNet:+0;-0;0}, Unrest {unrestNet:+0;-0;0}, Sickness {sickNet:+0;-0;0}");
+
+            bool hasDetails = false;
+            foreach (var entry in Log.Entries)
+            {
+                if (entry.category == CausalityCategory.General)
+                    continue;
+
+                hasDetails = true;
+                sb.AppendLine($"  [{entry.category}] {entry.description}");
+            }
+
+            if (!hasDetails)
+                sb.AppendLine("  (no logged events)");
+
+            return sb.ToString();
         }
 
         public void ContinueFromReport()

@@ -8,6 +8,8 @@ namespace SiegeSurvival.UI.Widgets
 {
     public class NextDayButton : MonoBehaviour
     {
+        const string EventLogPrefabResourcePath = "UI/EventLogPopup";
+
         [SerializeField] EventLogPanel _eventLogPanel;
         GameManager _gm;
 
@@ -16,7 +18,6 @@ namespace SiegeSurvival.UI.Widgets
             _gm = GameManager.Instance;
             if (_gm != null)
             {
-                _gm.OnDaySimulated += OnDaySimulated;
                 _gm.OnPhaseChanged += OnPhaseChanged;
             }
 
@@ -27,7 +28,6 @@ namespace SiegeSurvival.UI.Widgets
         {
             if (_gm != null)
             {
-                _gm.OnDaySimulated -= OnDaySimulated;
                 _gm.OnPhaseChanged -= OnPhaseChanged;
             }
         }
@@ -40,18 +40,34 @@ namespace SiegeSurvival.UI.Widgets
             }
         }
 
-        private void OnDaySimulated(SimulationContext ctx)
-        {
-            // Day simulation just completed, wait for phase to change to ShowReport
-        }
-
         private void OnPhaseChanged()
         {
-            if (_gm?.Phase == GamePhase.ShowReport && _eventLogPanel != null)
+            if (_gm?.Phase != GamePhase.ShowReport)
+                return;
+
+            var prefab = _eventLogPanel != null
+                ? _eventLogPanel
+                : Resources.Load<EventLogPanel>(EventLogPrefabResourcePath);
+
+            if (prefab != null)
             {
-                Instantiate(_eventLogPanel, transform.root, false);
-                _gm.ContinueFromReport();
+                var reportPanel = Instantiate(prefab, transform.root);
+                reportPanel.showLatestEntryOnly = true;
+
+                var popupRoot = reportPanel.popupRoot != null ? reportPanel.popupRoot : reportPanel.gameObject;
+                if (popupRoot.TryGetComponent<RectTransform>(out var rt))
+                    StretchToParent(rt);
             }
+
+            _gm.ContinueFromReport();
+        }
+
+        static void StretchToParent(RectTransform rt)
+        {
+            rt.anchorMin = Vector2.zero;
+            rt.anchorMax = Vector2.one;
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
         }
     }
 }

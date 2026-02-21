@@ -459,14 +459,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 7482667652216324306, guid: 8be33918f22257748bd9d7839eec2230, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -739,6 +739,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: SiegeSurvival::SiegeSurvival.UI.Panels.EventLogPanel
   logText: {fileID: 8932002934377176607}
   scrollRect: {fileID: 164735661327649988}
+  showLatestEntryOnly: 0
   popupRoot: {fileID: 8545342195575945317}
   closeButton: {fileID: 4612666777160885150}
 --- !u!1001 &990976645183901040
