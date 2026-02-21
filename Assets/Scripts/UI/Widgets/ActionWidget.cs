@@ -202,7 +202,7 @@ namespace SiegeSurvival.UI.Widgets
                 {
                     Id = missionId.ToString(),
                     Title = def.displayName,
-                    Description = def.description,
+                    Description = $"{def.description} Duration: {def.Duration} day{(def.Duration == 1 ? "" : "s")}",
                     Consequences = def.outcomesDescription,
                     Tooltip = BuildMissionTooltip(def)
                 });
