@@ -59,6 +59,12 @@ namespace SiegeSurvival.UI.Panels
             SetProjection(_meds, medsNet);
             SetProjection(_material, materialNet);
 
+            _food.SetTooltip(BuildFoodTooltip(s, foodNet));
+            _water.SetTooltip(BuildWaterTooltip(s, waterNet));
+            _fuel.SetTooltip(BuildFuelTooltip(s, fuelNet));
+            _meds.SetTooltip(BuildMedicineTooltip(s, medsNet));
+            _material.SetTooltip(BuildMaterialsTooltip(s, materialNet));
+
             _food.Projection.rectTransform.RebuildAllLayouts();
             _water.Projection.rectTransform.RebuildAllLayouts();
             _fuel.Projection.rectTransform.RebuildAllLayouts();
@@ -80,14 +86,63 @@ namespace SiegeSurvival.UI.Panels
             return new ResourceItemView(instance);
         }
 
+        string BuildFoodTooltip(GameState state, int netChange)
+        {
+            return $"Food\n" +
+                   $"Current: {state.food}\n" +
+                   $"Projected: {ResourceProjectionCalculator.FormatNetChange(netChange)}/day\n" +
+                   "Feeds the population. If Food reaches 0, morale drops and unrest pressure rises.";
+        }
+
+        string BuildWaterTooltip(GameState state, int netChange)
+        {
+            return $"Water\n" +
+                   $"Current: {state.water}\n" +
+                   $"Projected: {ResourceProjectionCalculator.FormatNetChange(netChange)}/day\n" +
+                   "Needed daily by all citizens. At 0 Water, morale drops and food consumption increases.";
+        }
+
+        string BuildFuelTooltip(GameState state, int netChange)
+        {
+            return $"Fuel\n" +
+                   $"Current: {state.fuel}\n" +
+                   $"Projected: {ResourceProjectionCalculator.FormatNetChange(netChange)}/day\n" +
+                   "Used for city operation. At 0 Fuel: sickness rises, morale falls, unrest rises, and food production is reduced.";
+        }
+
+        string BuildMedicineTooltip(GameState state, int netChange)
+        {
+            return $"Medicine\n" +
+                   $"Current: {state.medicine}\n" +
+                   $"Projected: {ResourceProjectionCalculator.FormatNetChange(netChange)}/day\n" +
+                   "Consumed by Clinic Staff to reduce sickness. No medicine means clinic workers cannot provide treatment.";
+        }
+
+        string BuildMaterialsTooltip(GameState state, int netChange)
+        {
+            return $"Materials\n" +
+                   $"Current: {state.materials}\n" +
+                   $"Projected: {ResourceProjectionCalculator.FormatNetChange(netChange)}/day\n" +
+                   "Used for repairs and key actions. Repair teams consume materials each day to restore perimeter integrity.";
+        }
+
         class ResourceItemView
         {
             public readonly TextMeshProUGUI CurrentAmount, Projection;
+            readonly TooltipMaker _tooltip;
 
             public ResourceItemView(GameObject instance)
             {
                 CurrentAmount = instance.FindChildRecursive<TextMeshProUGUI>("#Text");
                 Projection = instance.FindChildRecursive<TextMeshProUGUI>("#Projection");
+                if (!instance.TryGetComponent<TooltipMaker>(out var tooltip))
+                    tooltip = instance.AddComponent<TooltipMaker>();
+                _tooltip = tooltip;
+            }
+
+            public void SetTooltip(string tooltip)
+            {
+                _tooltip.SetTooltip(tooltip);
             }
         }
     }

@@ -51,6 +51,7 @@ namespace SiegeSurvival.UI.Widgets
             _gm.OnStateChanged += RefreshWidget;
 
             _buttonText.text = GetDefaultButtonText();
+            EnsureTooltip(_button.gameObject).SetTooltip(GetActionTypeTooltip());
             RefreshWidget();
         }
 
@@ -179,7 +180,8 @@ namespace SiegeSurvival.UI.Widgets
                     Id = lawId.ToString(),
                     Title = def.displayName,
                     Description = def.description,
-                    Consequences = FormatEffects(def.onEnactEffectsDescription, def.ongoingEffectsDescription)
+                    Consequences = FormatEffects(def.onEnactEffectsDescription, def.ongoingEffectsDescription),
+                    Tooltip = BuildLawTooltip(def)
                 });
             }
 
@@ -201,7 +203,8 @@ namespace SiegeSurvival.UI.Widgets
                     Id = missionId.ToString(),
                     Title = def.displayName,
                     Description = def.description,
-                    Consequences = def.outcomesDescription
+                    Consequences = def.outcomesDescription,
+                    Tooltip = BuildMissionTooltip(def)
                 });
             }
 
@@ -223,7 +226,8 @@ namespace SiegeSurvival.UI.Widgets
                     Id = orderId.ToString(),
                     Title = def.displayName,
                     Description = def.description,
-                    Consequences = FormatEffects(def.costDescription, def.effectDescription)
+                    Consequences = FormatEffects(def.costDescription, def.effectDescription),
+                    Tooltip = BuildEmergencyOrderTooltip(def)
                 });
             }
 
@@ -253,6 +257,59 @@ namespace SiegeSurvival.UI.Widgets
         static EmergencyOrderDefinition GetEmergencyOrderDefinition(EmergencyOrderId id)
         {
             return DefinitionRegistry.GetOrder(id);
+        }
+
+        string GetActionTypeTooltip()
+        {
+            return _actionType switch
+            {
+                ActionType.Law => "Laws are long-term policy changes. You can schedule one law at a time, and laws can only be enacted every 3 days.",
+                ActionType.Mission => "Missions send out 10 healthy workers and resolve after their listed duration. Only one mission can run at a time.",
+                ActionType.EmergencyOrder => "Emergency Orders are one-day crisis actions. Only one order can be used per day.",
+                _ => throw new ArgumentOutOfRangeException(),
+            };
+        }
+
+        static string BuildLawTooltip(LawDefinition def)
+        {
+            return $"{def.displayName}\n" +
+                   $"{NormalizeTooltipField(def.description, "No description.")}\n" +
+                   $"Requirements: {NormalizeTooltipField(def.requirementsDescription, "None")}\n" +
+                   $"On enact: {NormalizeTooltipField(def.onEnactEffectsDescription, "None")}\n" +
+                   $"Ongoing: {NormalizeTooltipField(def.ongoingEffectsDescription, "None")}";
+        }
+
+        static string BuildMissionTooltip(MissionDefinition def)
+        {
+            return $"{def.displayName}\n" +
+                   $"{NormalizeTooltipField(def.description, "No description.")}\n" +
+                   $"Duration: {def.Duration} day{(def.Duration == 1 ? "" : "s")}\n" +
+                   "Commitment: 10 healthy workers for the mission duration.\n" +
+                   $"Outcomes: {NormalizeTooltipField(def.outcomesDescription, "See mission report.")}";
+        }
+
+        static string BuildEmergencyOrderTooltip(EmergencyOrderDefinition def)
+        {
+            return $"{def.displayName}\n" +
+                   $"{NormalizeTooltipField(def.description, "No description.")}\n" +
+                   $"Cost: {NormalizeTooltipField(def.costDescription, "None")}\n" +
+                   $"Effect: {NormalizeTooltipField(def.effectDescription, "None")}\n" +
+                   "Duration: one day";
+        }
+
+        static string NormalizeTooltipField(string value, string fallback)
+        {
+            if (string.IsNullOrWhiteSpace(value) || value == "(none)")
+                return fallback;
+
+            return value.Trim();
+        }
+
+        static TooltipMaker EnsureTooltip(GameObject target)
+        {
+            if (!target.TryGetComponent<TooltipMaker>(out var tooltip))
+                tooltip = target.AddComponent<TooltipMaker>();
+            return tooltip;
         }
 
         public void Show()

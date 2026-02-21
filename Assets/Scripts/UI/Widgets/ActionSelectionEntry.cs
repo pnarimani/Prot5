@@ -6,5 +6,6 @@
         public string Title;
         public string Description;
         public string Consequences;
+        public string Tooltip;
     }
 }

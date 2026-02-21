@@ -25,6 +25,8 @@ namespace SiegeSurvival.UI.Widgets
                 row.Title.text = e.Title;
                 row.Description.text = e.Description;
                 row.Consequences.text = e.Consequences;
+                var tooltip = EnsureTooltip(row.SelectButton != null ? row.SelectButton.gameObject : row.gameObject);
+                tooltip.SetTooltip(e.Tooltip);
                 var eCopy = e;
                 row.SelectButton.onClick.AddListener(() =>
                 {
@@ -32,6 +34,13 @@ namespace SiegeSurvival.UI.Widgets
                     Destroy(gameObject);
                 });
             }
+        }
+
+        static TooltipMaker EnsureTooltip(GameObject target)
+        {
+            if (!target.TryGetComponent<TooltipMaker>(out var tooltip))
+                tooltip = target.AddComponent<TooltipMaker>();
+            return tooltip;
         }
     }
 }
