@@ -212,15 +212,9 @@ namespace SiegeSurvival.UI.Panels
             }
         }
 
-        public void OpenPopup()
-        {
-            popupRoot?.SetActive(true);
-            RebuildDisplay();
-        }
-
         public void ClosePopup()
         {
-            popupRoot?.SetActive(false);
+            Destroy(gameObject);
         }
     }
 }

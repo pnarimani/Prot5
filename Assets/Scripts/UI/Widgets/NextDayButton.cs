@@ -49,7 +49,8 @@ namespace SiegeSurvival.UI.Widgets
         {
             if (_gm?.Phase == GamePhase.ShowReport && _eventLogPanel != null)
             {
-                Instantiate(_eventLogPanel);
+                Instantiate(_eventLogPanel, transform.root, false);
+                _gm.ContinueFromReport();
             }
         }
     }

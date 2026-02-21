@@ -15,7 +15,6 @@ namespace SiegeSurvival.UI.Panels
         ProgressBarWidget _siege;
         TextMeshProUGUI _siegeText;
         Button _eventLogButton;
-        EventLogPanel _eventLogPanel;
         GameManager _gm;
 
         bool _inited;
@@ -65,31 +64,21 @@ namespace SiegeSurvival.UI.Panels
 
         void OnEventLogClicked()
         {
-            var popup = GetOrCreatePopup();
-            popup?.OpenPopup();
-        }
-
-        EventLogPanel GetOrCreatePopup()
-        {
-            if (_eventLogPanel != null)
-                return _eventLogPanel;
-
             var prefab = eventLogPopupPrefab != null
                 ? eventLogPopupPrefab
                 : Resources.Load<EventLogPanel>(EventLogPrefabResourcePath);
 
             if (prefab == null)
             {
-                Debug.LogError($"MidBottomInfoPanel: missing Event Log popup prefab at Resources/{EventLogPrefabResourcePath}");
-                return null;
+                Debug.LogError(
+                    $"MidBottomInfoPanel: missing Event Log popup prefab at Resources/{EventLogPrefabResourcePath}");
+                return;
             }
 
-            _eventLogPanel = Instantiate(prefab, transform.root);
-            var popupRoot = _eventLogPanel.popupRoot != null ? _eventLogPanel.popupRoot : _eventLogPanel.gameObject;
+            var eventLogPanel = Instantiate(prefab, transform.root);
+            var popupRoot = eventLogPanel.popupRoot != null ? eventLogPanel.popupRoot : eventLogPanel.gameObject;
             if (popupRoot.TryGetComponent<RectTransform>(out var rt))
                 StretchToParent(rt);
-
-            return _eventLogPanel;
         }
 
         static void StretchToParent(RectTransform rt)
