@@ -25,6 +25,7 @@ namespace SiegeSurvival
         {
             _text.text = tooltip;
             gameObject.SetActive(true);
+            transform.SetAsLastSibling();
         }
 
         public void Hide()
