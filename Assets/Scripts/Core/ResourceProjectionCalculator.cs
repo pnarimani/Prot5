@@ -61,13 +61,13 @@ namespace SiegeSurvival.Core
         public static int GetSanitationEffect(GameState s)
         {
             int units = s.workerAllocation[JobSlot.Sanitation] / 5;
-            return units * 5;
+            return units;
         }
 
         public static int GetClinicEffect(GameState s)
         {
             int units = s.workerAllocation[JobSlot.ClinicStaff] / 5;
-            return units * 8;
+            return units;
         }
 
         public static int GetClinicMedicineCost(GameState s)
@@ -137,14 +137,14 @@ namespace SiegeSurvival.Core
 
         public static string GetSanitationProjectionFormatted(GameState s)
         {
-            return $"-{GetSanitationEffect(s)} Sickness/day";
+            return $"{GetSanitationEffect(s)} units (scales with sickness)";
         }
 
         public static string GetClinicProjectionFormatted(GameState s)
         {
-            int effect = GetClinicEffect(s);
+            int units = GetClinicEffect(s);
             int cost = GetClinicMedicineCost(s);
-            return $"-{effect} Sickness/day, Cost: {cost} Med/day";
+            return $"{units} units (scales with sickness), Cost: {cost} Med/day";
         }
 
         public static string GetFuelProjectionFormatted(GameState s)

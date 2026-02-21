@@ -111,11 +111,11 @@ namespace SiegeSurvival.Systems
 
             // === 3e. Sanitation ===
             int sanUnits = state.workerAllocation[JobSlot.Sanitation] / 5;
-            ctx.sanitationReduction = sanUnits * 5;
+            ctx.sanitationReduction = sanUnits;
             if (sanUnits > 0)
             {
-                log.AddFlat(CausalityCategory.Sickness, "Sanitation", -ctx.sanitationReduction,
-                    $"Sanitation reduces sickness by {ctx.sanitationReduction}");
+                log.AddFlat(CausalityCategory.Sickness, "Sanitation", 0,
+                    $"Sanitation capacity: {sanUnits} units");
             }
 
             // === 3f. Guard Duty (automatic) ===
@@ -155,10 +155,10 @@ namespace SiegeSurvival.Systems
                     state.medicine -= totalMedCost;
                 }
 
-                ctx.clinicReduction = effectiveUnits * 8;
+                ctx.clinicReduction = effectiveUnits;
 
-                log.AddFlat(CausalityCategory.Sickness, "Clinic", -ctx.clinicReduction,
-                    $"Clinic reduces sickness by {ctx.clinicReduction} (used {effectiveUnits * adjustedMedCost} medicine)");
+                log.AddFlat(CausalityCategory.Sickness, "Clinic", 0,
+                    $"Clinic capacity: {effectiveUnits} units (used {effectiveUnits * adjustedMedCost} medicine)");
             }
 
             // === 3h. Fuel Scavenging ===

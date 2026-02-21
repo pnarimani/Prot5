@@ -108,7 +108,7 @@ namespace SiegeSurvival.UI.Panels
         private string GetSanitationProjection(GameState s)
         {
             int units = s.workerAllocation[JobSlot.Sanitation] / 5;
-            return $"-{units * 5} Sickness/day";
+            return $"{units} units (scales with sickness)";
         }
 
         private string GetClinicProjection(GameState s)
@@ -116,7 +116,7 @@ namespace SiegeSurvival.UI.Panels
             int units = s.workerAllocation[JobSlot.ClinicStaff] / 5;
             float medCostMult = s.enactedLaws.Contains(LawId.L09_MedicalTriage) ? 0.5f : 1f;
             int medPerUnit = Mathf.CeilToInt(5 * medCostMult);
-            return $"-{units * 8} Sickness/day, Cost: {units * medPerUnit} Med/day";
+            return $"{units} units (scales with sickness), Cost: {units * medPerUnit} Med/day";
         }
 
         private string GetFuelProjection(GameState s)

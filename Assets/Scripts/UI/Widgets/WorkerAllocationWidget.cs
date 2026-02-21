@@ -70,8 +70,8 @@ namespace SiegeSurvival
                 JobSlot.WaterDrawing => "Water Drawing\nEvery 5 workers produce 12 base Water/day. Output is reduced when wells are damaged." + projectionLine,
                 JobSlot.MaterialsCrafting => "Materials Crafting\nEvery 5 workers produce 8 base Materials/day (zone and law modifiers apply)." + projectionLine,
                 JobSlot.Repairs => "Repairs\nEvery 5 workers repair 8 base integrity/day and consume 4 Materials/day. Repairs stall without materials." + projectionLine,
-                JobSlot.Sanitation => "Sanitation\nEvery 5 workers reduce Sickness by 5/day. Strong counter to overcrowding and fuel-deficit disease pressure." + projectionLine,
-                JobSlot.ClinicStaff => "Clinic Staff\nEvery 5 workers reduce Sickness by 8/day and consume Medicine. Without medicine, clinic output is 0." + projectionLine,
+                JobSlot.Sanitation => "Sanitation\nEvery 5 workers provide 1 treatment unit. Treatment effectiveness scales with current sickness." + projectionLine,
+                JobSlot.ClinicStaff => "Clinic Staff\nEvery 5 workers provide 1 treatment unit and consume Medicine. Treatment effectiveness scales with current sickness." + projectionLine,
                 JobSlot.FuelScavenging => "Fuel Scavenging\nEvery 5 workers produce 15 base Fuel/day. At Siege Intensity 4+, this job has a daily ambush death risk." + projectionLine + BuildFuelRiskLine(state),
                 _ => "Allocate workers in groups of 5." + projectionLine
             };

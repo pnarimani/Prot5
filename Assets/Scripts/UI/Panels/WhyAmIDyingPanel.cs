@@ -197,16 +197,17 @@ namespace SiegeSurvival.UI.Panels
 
         private int EstimateSicknessGrowth(GameState s)
         {
-            int growth = 2; // base
+            const float TreatmentScaling = 0.10f;
+            int growth = 2;
             if (s.fuel <= 0) growth += 10;
             foreach (var z in s.zones)
             {
                 if (!z.isLost && z.IsOvercrowded)
                     growth += Mathf.FloorToInt(z.OvercrowdingPercent / 10) * 2;
             }
-            int sanitation = s.workerAllocation[Data.JobSlot.Sanitation] / 5 * 5;
-            int clinic = s.workerAllocation[Data.JobSlot.ClinicStaff] / 5 * 8;
-            growth -= sanitation + clinic;
+            int totalCapacity = s.workerAllocation[Data.JobSlot.Sanitation] / 5 + s.workerAllocation[Data.JobSlot.ClinicStaff] / 5;
+            float treatmentEffect = totalCapacity * TreatmentScaling * s.sickness;
+            growth -= Mathf.RoundToInt(treatmentEffect);
             return growth;
         }
     }
