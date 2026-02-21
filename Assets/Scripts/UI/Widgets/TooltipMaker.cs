@@ -5,7 +5,7 @@ namespace SiegeSurvival
 {
     public class TooltipMaker : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField, TextArea] private string _tooltip;
+        [SerializeField, TextArea(7, 15)] private string _tooltip;
 
         public void SetTooltip(string tooltip)
         {

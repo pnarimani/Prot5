@@ -1694,6 +1694,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 9024818637933080280, guid: 8d11940fa89c0bd49973a119e666c1c7, type: 3}
   m_PrefabInstance: {fileID: 581978714}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &582560659 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7433872215652161650, guid: b7361680e0237c44c971889da9db3eec, type: 3}
+  m_PrefabInstance: {fileID: 1227811073}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -1951,6 +1962,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1814436848446957796, guid: 99a5ded151e460d4d9a3b7670faaa90e, type: 3}
   m_PrefabInstance: {fileID: 683773340}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &717354494 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1676370315966479592, guid: b7361680e0237c44c971889da9db3eec, type: 3}
+  m_PrefabInstance: {fileID: 1227811073}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &726707880
 GameObject:
   m_ObjectHideFlags: 0
@@ -1989,9 +2005,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 146.18604, y: -583.166}
+  m_AnchoredPosition: {x: -50, y: -583.166}
   m_SizeDelta: {x: 392.3721, y: 0}
-  m_Pivot: {x: 0.5, y: 1}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &726707882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3471,6 +3487,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1294872805}
     m_Modifications:
+    - target: {fileID: 611419772089971171, guid: b7361680e0237c44c971889da9db3eec, type: 3}
+      propertyPath: m_text
+      value: Guards
+      objectReference: {fileID: 0}
     - target: {fileID: 1676370315966479592, guid: b7361680e0237c44c971889da9db3eec, type: 3}
       propertyPath: m_Name
       value: Guards
@@ -3563,13 +3583,53 @@ PrefabInstance:
     - {fileID: 2857721321075402920, guid: b7361680e0237c44c971889da9db3eec, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1676370315966479592, guid: b7361680e0237c44c971889da9db3eec, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1227811075}
+    - targetCorrespondingSourceObject: {fileID: 1676370315966479592, guid: b7361680e0237c44c971889da9db3eec, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1227811076}
   m_SourcePrefab: {fileID: 100100000, guid: b7361680e0237c44c971889da9db3eec, type: 3}
 --- !u!224 &1227811074 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4205755063619788827, guid: b7361680e0237c44c971889da9db3eec, type: 3}
   m_PrefabInstance: {fileID: 1227811073}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1227811075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 717354494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac2330239267d264781cff0e30701f63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SiegeSurvival::SiegeSurvival.GuardsWidget
+  _warning: {fileID: 2146152896}
+  _projection: {fileID: 582560659}
+--- !u!114 &1227811076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 717354494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72efa8aa0c54493aba24b1a262b08a68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SiegeSurvival::SiegeSurvival.TooltipMaker
+  _tooltip: "Guards\n\nAll guards are always on duty and they cannot be reassigned.\n\nEvery
+    5 guards form one guard unit, providing:\n  \u2022 -1 Siege Damage per day\n 
+    \u2022 -3 Unrest per day\n\nWith 3+ units (15 guards), they can repel Wall Breach
+    attempts entirely.\n\nGuards are the last to die in any mass-casualty event,
+    making them your most resilient population group.\n\nGuard numbers can increase
+    via the Mandatory Guard Service law (+10 guards), but may decrease from the Guard
+    Desertion incident (-5 guards). Keep your guard count healthy to hold the siege
+    at bay."
 --- !u!1001 &1285561636
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5563,6 +5623,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2114538356}
   m_CullTransparentMesh: 1
+--- !u!114 &2146152896 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4073095054175363885, guid: b7361680e0237c44c971889da9db3eec, type: 3}
+  m_PrefabInstance: {fileID: 1227811073}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &2058747334454910745
 GameObject:
   m_ObjectHideFlags: 0
