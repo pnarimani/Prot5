@@ -354,32 +354,49 @@ namespace SiegeSurvival.Core
                     if (e.category == CausalityCategory.Medicine ||
                         (e.category == CausalityCategory.Mission && e.description.Contains("Medicine")))
                     {
-                        sb.AppendLine($"  [{e.source}] {e.description}");
+                        sb.AppendLine($"  {e.description}");
                     }
                 }
                 LastDayReportEntries.Add(new DayReportEntry("Medicine Updated", sb.ToString().TrimEnd()));
             }
 
-            // --- Morale, Unrest, Sickness ---
+            // --- Morale ---
             {
                 int moraleNet = State.morale - ctx.moraleStart;
+                var sb = new StringBuilder();
+                sb.AppendLine($"Morale: {ctx.moraleStart} → {State.morale} ({(moraleNet >= 0 ? "+" : "")}{moraleNet})");
+                foreach (var e in Log.Entries)
+                {
+                    if (e.category == CausalityCategory.Morale)
+                        sb.AppendLine($"  {e.description}");
+                }
+                LastDayReportEntries.Add(new DayReportEntry("Morale Updated", sb.ToString().TrimEnd()));
+            }
+
+            // --- Unrest ---
+            {
                 int unrestNet = State.unrest - ctx.unrestStart;
+                var sb = new StringBuilder();
+                sb.AppendLine($"Unrest: {ctx.unrestStart} → {State.unrest} ({(unrestNet >= 0 ? "+" : "")}{unrestNet})");
+                foreach (var e in Log.Entries)
+                {
+                    if (e.category == CausalityCategory.Unrest)
+                        sb.AppendLine($"  [{e.source}] {e.description}");
+                }
+                LastDayReportEntries.Add(new DayReportEntry("Unrest Updated", sb.ToString().TrimEnd()));
+            }
+
+            // --- Sickness ---
+            {
                 int sickNet = State.sickness - ctx.sicknessStart;
                 var sb = new StringBuilder();
-                sb.AppendLine($"Morale:  {ctx.moraleStart} → {State.morale} ({(moraleNet >= 0 ? "+" : "")}{moraleNet})");
-                sb.AppendLine($"Unrest:  {ctx.unrestStart} → {State.unrest} ({(unrestNet >= 0 ? "+" : "")}{unrestNet})");
                 sb.AppendLine($"Sickness: {ctx.sicknessStart} → {State.sickness} ({(sickNet >= 0 ? "+" : "")}{sickNet})");
                 foreach (var e in Log.Entries)
                 {
-                    if (e.category == CausalityCategory.Morale ||
-                        e.category == CausalityCategory.Unrest ||
-                        e.category == CausalityCategory.Sickness ||
-                        e.category == CausalityCategory.Overcrowding)
-                    {
+                    if (e.category == CausalityCategory.Sickness || e.category == CausalityCategory.Overcrowding)
                         sb.AppendLine($"  [{e.source}] {e.description}");
-                    }
                 }
-                LastDayReportEntries.Add(new DayReportEntry("Morale / Unrest / Sickness", sb.ToString().TrimEnd()));
+                LastDayReportEntries.Add(new DayReportEntry("Sickness Updated", sb.ToString().TrimEnd()));
             }
 
             // --- Deaths ---
