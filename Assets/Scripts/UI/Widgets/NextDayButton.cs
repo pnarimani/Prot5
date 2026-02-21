@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
+using SiegeSurvival;
 using SiegeSurvival.Core;
-using SiegeSurvival.UI.Panels;
 using SiegeSurvival.Data;
 using UnityEngine.UI;
 
@@ -8,10 +9,13 @@ namespace SiegeSurvival.UI.Widgets
 {
     public class NextDayButton : MonoBehaviour
     {
-        const string EventLogPrefabResourcePath = "UI/EventLogPopup";
+        const string DayReportPopupPrefabPath = "Prefabs/DayReportPopup";
 
-        [SerializeField] EventLogPanel _eventLogPanel;
+        [SerializeField] DayReportPopup _dayReportPopupPrefab;
         GameManager _gm;
+
+        // Queue of entries to show one by one
+        readonly Queue<DayReportEntry> _pendingReports = new();
 
         void Start()
         {
@@ -40,26 +44,51 @@ namespace SiegeSurvival.UI.Widgets
             }
         }
 
-        private void OnPhaseChanged()
+        void OnPhaseChanged()
         {
             if (_gm?.Phase != GamePhase.ShowReport)
                 return;
 
-            var prefab = _eventLogPanel != null
-                ? _eventLogPanel
-                : Resources.Load<EventLogPanel>(EventLogPrefabResourcePath);
+            // Load the pending report entries into the queue
+            _pendingReports.Clear();
+            foreach (var entry in _gm.LastDayReportEntries)
+                _pendingReports.Enqueue(entry);
 
-            if (prefab != null)
+            // Show the first popup — each popup calls ShowNextReport when closed
+            ShowNextReport();
+        }
+
+        void ShowNextReport()
+        {
+            if (_pendingReports.Count == 0)
             {
-                var reportPanel = Instantiate(prefab, transform.root);
-                reportPanel.showLatestEntryOnly = true;
-
-                var popupRoot = reportPanel.popupRoot != null ? reportPanel.popupRoot : reportPanel.gameObject;
-                if (popupRoot.TryGetComponent<RectTransform>(out var rt))
-                    StretchToParent(rt);
+                // All reports shown — continue the game
+                _gm.ContinueFromReport();
+                return;
             }
 
-            _gm.ContinueFromReport();
+            var entry = _pendingReports.Dequeue();
+
+            var prefab = _dayReportPopupPrefab != null
+                ? _dayReportPopupPrefab
+                : Resources.Load<DayReportPopup>(DayReportPopupPrefabPath);
+
+            if (prefab == null)
+            {
+                // Fallback: if prefab not found, skip all and continue
+                _pendingReports.Clear();
+                _gm.ContinueFromReport();
+                return;
+            }
+
+            var popup = Object.Instantiate(prefab, transform.root);
+
+            // Stretch to fill the screen
+            if (popup.TryGetComponent<RectTransform>(out var rt))
+                StretchToParent(rt);
+
+            popup.SetContent(entry.Title, entry.Description);
+            popup.OnClosed += ShowNextReport;
         }
 
         static void StretchToParent(RectTransform rt)

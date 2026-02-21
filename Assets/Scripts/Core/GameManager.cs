@@ -36,6 +36,8 @@ namespace SiegeSurvival.Core
 
         readonly List<string> _dayReports = new();
 
+        public List<DayReportEntry> LastDayReportEntries { get; } = new();
+
         private void Start()
         {
             StartNewRun();
@@ -154,6 +156,10 @@ namespace SiegeSurvival.Core
             Telemetry.RecordDayEnd(State, Log);
             _dayReports.Add(BuildDayReportEntry(LastSimContext, scheduledActionSummary));
 
+            // Build structured per-event report entries for popup flow
+            LastDayReportEntries.Clear();
+            BuildStructuredDayReport(LastSimContext, scheduledActionSummary);
+
             // Determine next phase
             if (State.isGameOver)
             {
@@ -233,8 +239,250 @@ namespace SiegeSurvival.Core
             return sb.ToString();
         }
 
-        public void ContinueFromReport()
+        void BuildStructuredDayReport(SimulationContext ctx, string scheduledActionSummary)
         {
+            int day = State.currentDay - 1;
+
+            // --- Player Action ---
+            if (State.scheduledLaw == null && State.scheduledOrder == null && State.scheduledMission == null)
+            {
+                // Action was just executed; summarise from the summary string
+            }
+            LastDayReportEntries.Add(new DayReportEntry(
+                $"Day {day} — Player Action",
+                scheduledActionSummary
+            ));
+
+            // --- Food Update ---
+            {
+                int foodNet = State.food - ctx.foodStart;
+                string sign = foodNet >= 0 ? "+" : "";
+                var sb = new StringBuilder();
+                sb.AppendLine($"Food: {ctx.foodStart} → {State.food} ({sign}{foodNet})");
+                sb.AppendLine($"  Produced: +{ctx.foodProduced}");
+                sb.AppendLine($"  Consumed: -{ctx.foodConsumed}");
+                if (ctx.foodDeficit)
+                    sb.AppendLine("  WARNING: Food deficit this day!");
+                // Any event/law entries that mention food
+                foreach (var e in Log.Entries)
+                {
+                    if (e.category == CausalityCategory.Food ||
+                        (e.category == CausalityCategory.Event && e.description.Contains("Food")) ||
+                        (e.category == CausalityCategory.EmergencyOrder && e.description.Contains("Food")) ||
+                        (e.category == CausalityCategory.Mission && e.description.Contains("Food")))
+                    {
+                        sb.AppendLine($"  [{e.source}] {e.description}");
+                    }
+                }
+                LastDayReportEntries.Add(new DayReportEntry("Food Updated", sb.ToString().TrimEnd()));
+            }
+
+            // --- Water Update ---
+            {
+                int waterNet = State.water - ctx.waterStart;
+                string sign = waterNet >= 0 ? "+" : "";
+                var sb = new StringBuilder();
+                sb.AppendLine($"Water: {ctx.waterStart} → {State.water} ({sign}{waterNet})");
+                sb.AppendLine($"  Produced: +{ctx.waterProduced}");
+                sb.AppendLine($"  Consumed: -{ctx.waterConsumed}");
+                if (ctx.waterDeficit)
+                    sb.AppendLine("  WARNING: Water deficit this day!");
+                foreach (var e in Log.Entries)
+                {
+                    if (e.category == CausalityCategory.Water ||
+                        (e.category == CausalityCategory.Event && e.description.Contains("Water")) ||
+                        (e.category == CausalityCategory.EmergencyOrder && e.description.Contains("Water")) ||
+                        (e.category == CausalityCategory.Mission && e.description.Contains("Water")))
+                    {
+                        sb.AppendLine($"  [{e.source}] {e.description}");
+                    }
+                }
+                LastDayReportEntries.Add(new DayReportEntry("Water Updated", sb.ToString().TrimEnd()));
+            }
+
+            // --- Fuel Update ---
+            {
+                int fuelNet = State.fuel - ctx.fuelStart;
+                string sign = fuelNet >= 0 ? "+" : "";
+                var sb = new StringBuilder();
+                sb.AppendLine($"Fuel: {ctx.fuelStart} → {State.fuel} ({sign}{fuelNet})");
+                sb.AppendLine($"  Produced: +{ctx.fuelProduced}");
+                sb.AppendLine($"  Consumed: -{ctx.fuelConsumed}");
+                if (ctx.fuelDeficit)
+                    sb.AppendLine("  WARNING: Fuel deficit this day!");
+                foreach (var e in Log.Entries)
+                {
+                    if (e.category == CausalityCategory.Fuel ||
+                        (e.category == CausalityCategory.Event && e.description.Contains("Fuel")) ||
+                        (e.category == CausalityCategory.EmergencyOrder && e.description.Contains("Fuel")) ||
+                        (e.category == CausalityCategory.Mission && e.description.Contains("Fuel")))
+                    {
+                        sb.AppendLine($"  [{e.source}] {e.description}");
+                    }
+                }
+                LastDayReportEntries.Add(new DayReportEntry("Fuel Updated", sb.ToString().TrimEnd()));
+            }
+
+            // --- Materials Update ---
+            {
+                int matNet = State.materials - ctx.materialsStart;
+                string sign = matNet >= 0 ? "+" : "";
+                var sb = new StringBuilder();
+                sb.AppendLine($"Materials: {ctx.materialsStart} → {State.materials} ({sign}{matNet})");
+                sb.AppendLine($"  Produced: +{ctx.materialsProduced}");
+                foreach (var e in Log.Entries)
+                {
+                    if (e.category == CausalityCategory.Materials ||
+                        (e.category == CausalityCategory.Event && e.description.Contains("Materials")) ||
+                        (e.category == CausalityCategory.EmergencyOrder && e.description.Contains("Materials")) ||
+                        (e.category == CausalityCategory.Mission && e.description.Contains("Materials")))
+                    {
+                        sb.AppendLine($"  [{e.source}] {e.description}");
+                    }
+                }
+                LastDayReportEntries.Add(new DayReportEntry("Materials Updated", sb.ToString().TrimEnd()));
+            }
+
+            // --- Medicine Update ---
+            {
+                int medNet = State.medicine - ctx.medicineStart;
+                string sign = medNet >= 0 ? "+" : "";
+                var sb = new StringBuilder();
+                sb.AppendLine($"Medicine: {ctx.medicineStart} → {State.medicine} ({sign}{medNet})");
+                foreach (var e in Log.Entries)
+                {
+                    if (e.category == CausalityCategory.Medicine ||
+                        (e.category == CausalityCategory.Mission && e.description.Contains("Medicine")))
+                    {
+                        sb.AppendLine($"  [{e.source}] {e.description}");
+                    }
+                }
+                LastDayReportEntries.Add(new DayReportEntry("Medicine Updated", sb.ToString().TrimEnd()));
+            }
+
+            // --- Morale, Unrest, Sickness ---
+            {
+                int moraleNet = State.morale - ctx.moraleStart;
+                int unrestNet = State.unrest - ctx.unrestStart;
+                int sickNet = State.sickness - ctx.sicknessStart;
+                var sb = new StringBuilder();
+                sb.AppendLine($"Morale:  {ctx.moraleStart} → {State.morale} ({(moraleNet >= 0 ? "+" : "")}{moraleNet})");
+                sb.AppendLine($"Unrest:  {ctx.unrestStart} → {State.unrest} ({(unrestNet >= 0 ? "+" : "")}{unrestNet})");
+                sb.AppendLine($"Sickness: {ctx.sicknessStart} → {State.sickness} ({(sickNet >= 0 ? "+" : "")}{sickNet})");
+                foreach (var e in Log.Entries)
+                {
+                    if (e.category == CausalityCategory.Morale ||
+                        e.category == CausalityCategory.Unrest ||
+                        e.category == CausalityCategory.Sickness ||
+                        e.category == CausalityCategory.Overcrowding)
+                    {
+                        sb.AppendLine($"  [{e.source}] {e.description}");
+                    }
+                }
+                LastDayReportEntries.Add(new DayReportEntry("Morale / Unrest / Sickness", sb.ToString().TrimEnd()));
+            }
+
+            // --- Deaths ---
+            {
+                var deathEntries = new List<CausalityEntry>();
+                foreach (var e in Log.Entries)
+                {
+                    if (e.category == CausalityCategory.Death || e.category == CausalityCategory.Population)
+                        deathEntries.Add(e);
+                }
+                if (deathEntries.Count > 0)
+                {
+                    var sb = new StringBuilder();
+                    foreach (var e in deathEntries)
+                        sb.AppendLine($"  [{e.source}] {e.description}");
+                    LastDayReportEntries.Add(new DayReportEntry("Population Changes", sb.ToString().TrimEnd()));
+                }
+            }
+
+            // --- Events (E1–E5, early incidents) ---
+            {
+                var eventEntries = new List<CausalityEntry>();
+                foreach (var e in Log.Entries)
+                {
+                    if (e.category == CausalityCategory.Event)
+                        eventEntries.Add(e);
+                }
+                foreach (var e in eventEntries)
+                {
+                    LastDayReportEntries.Add(new DayReportEntry(
+                        $"Event: {e.source}",
+                        e.description
+                    ));
+                }
+            }
+
+            // --- Mission resolution ---
+            {
+                var missionEntries = new List<CausalityEntry>();
+                foreach (var e in Log.Entries)
+                {
+                    if (e.category == CausalityCategory.Mission)
+                        missionEntries.Add(e);
+                }
+                foreach (var e in missionEntries)
+                {
+                    LastDayReportEntries.Add(new DayReportEntry(
+                        "Mission Ended",
+                        e.description
+                    ));
+                }
+            }
+
+            // --- Siege / Zone Integrity ---
+            {
+                bool hasSiegeDamage = false;
+                var sb = new StringBuilder();
+                foreach (var e in Log.Entries)
+                {
+                    if (e.category == CausalityCategory.SiegeDamage || e.category == CausalityCategory.Integrity)
+                    {
+                        hasSiegeDamage = true;
+                        sb.AppendLine($"  [{e.source}] {e.description}");
+                    }
+                }
+                if (hasSiegeDamage)
+                    LastDayReportEntries.Add(new DayReportEntry("Siege Damage / Zone Integrity", sb.ToString().TrimEnd()));
+            }
+
+            // --- Emergency Order effects (non-cost) ---
+            {
+                bool hasOrderEffect = false;
+                var sb = new StringBuilder();
+                foreach (var e in Log.Entries)
+                {
+                    if (e.category == CausalityCategory.EmergencyOrder)
+                    {
+                        hasOrderEffect = true;
+                        sb.AppendLine($"  [{e.source}] {e.description}");
+                    }
+                }
+                if (hasOrderEffect)
+                    LastDayReportEntries.Add(new DayReportEntry("Emergency Order Effects", sb.ToString().TrimEnd()));
+            }
+
+            // --- Law effects ---
+            {
+                bool hasLaw = false;
+                var sb = new StringBuilder();
+                foreach (var e in Log.Entries)
+                {
+                    if (e.category == CausalityCategory.Law)
+                    {
+                        hasLaw = true;
+                        sb.AppendLine($"  [{e.source}] {e.description}");
+                    }
+                }
+                if (hasLaw)
+                    LastDayReportEntries.Add(new DayReportEntry("Law Effects", sb.ToString().TrimEnd()));
+            }
+        }
+
+        public void ContinueFromReport()        {
             if (Phase != GamePhase.ShowReport) return;
             Phase = GamePhase.PlayerTurn;
             OnPhaseChanged?.Invoke();

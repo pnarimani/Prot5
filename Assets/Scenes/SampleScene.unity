@@ -4410,7 +4410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9db78b9d9d7151d40a22859fd7ca4364, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SiegeSurvival::SiegeSurvival.UI.Widgets.NextDayButton
-  _eventLogPanel: {fileID: 7010719756647319841, guid: 4dcce78caa7344342ab9ee6c2c8b85b5, type: 3}
+  _dayReportPopupPrefab: {fileID: 5300264306182921087, guid: 83eab50071efcf640b76aa1ad2ae860c, type: 3}
 --- !u!1 &1560767143
 GameObject:
   m_ObjectHideFlags: 0
