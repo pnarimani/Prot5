@@ -18,7 +18,7 @@ namespace SiegeSurvival
 
         void Update()
         {
-            transform.position = Input.mousePosition;
+            transform.position = Input.mousePosition + new Vector3(0, -40, 0);
         }
 
         public void Show(string tooltip)
